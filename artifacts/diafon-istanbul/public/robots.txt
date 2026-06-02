@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://diafonistanbul.com/sitemap.xml
