@@ -10,6 +10,7 @@ const NAV_ITEMS = [
   { label: "Ürünler", href: "/urunler" },
   { label: "Blog", href: "/blog" },
   { label: "Hizmetler", anchor: "hizmetler" },
+  { label: "Hakkımızda", anchor: "hakkimizda" },
   { label: "İletişim", anchor: "iletisim" },
 ];
 

@@ -46,7 +46,17 @@
     }
     </script>
   </head>
-  <body class="dark">
+  <body>
+    <script>
+      (function() {
+        var saved = localStorage.getItem("theme-v2");
+        if (saved === "dark") {
+          document.documentElement.classList.add("dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+        }
+      })();
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

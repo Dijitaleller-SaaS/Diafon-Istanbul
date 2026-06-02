@@ -19,8 +19,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const saved = localStorage.getItem("theme");
-    // Default to LIGHT unless user explicitly chose dark
+    const saved = localStorage.getItem("theme-v2");
+    // Default to LIGHT unless user explicitly chose dark in this version
     const startDark = saved === "dark";
     setIsDark(startDark);
     if (startDark) {
@@ -39,7 +39,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       } else {
         document.documentElement.classList.remove("dark");
       }
-      localStorage.setItem("theme", next ? "dark" : "light");
+      localStorage.setItem("theme-v2", next ? "dark" : "light");
       return next;
     });
   };

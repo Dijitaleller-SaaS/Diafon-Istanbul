@@ -952,6 +952,114 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        {/* ── Hakkımızda Section ── */}
+        <section id="hakkimizda" className="py-24 bg-muted/30">
+          <div className="container mx-auto px-4 md:px-6">
+            <FadeIn>
+              <div className="text-center max-w-2xl mx-auto mb-16">
+                <div className="inline-flex items-center gap-2 text-xs font-semibold tracking-widest uppercase text-primary mb-4">
+                  <span className="w-8 h-px bg-primary"></span>
+                  Kurumsal
+                  <span className="w-8 h-px bg-primary"></span>
+                </div>
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">Hakkımızda</h2>
+                <p className="text-muted-foreground text-lg">
+                  İstanbul Diafon ve Güvenlik Sistemleri Kurulum Merkezi
+                </p>
+              </div>
+            </FadeIn>
+
+            <div className="grid md:grid-cols-2 gap-12 items-start max-w-5xl mx-auto">
+              <FadeIn delay={0.1}>
+                <div className="space-y-6">
+                  <p className="text-muted-foreground leading-relaxed">
+                    <strong className="text-foreground">Diafon İstanbul</strong> olarak, İstanbul genelinde diafon sistemleri, interkom teknolojileri, akıllı bina çözümleri ve profesyonel güvenlik sistemleri konusunda öncü bir kurulum merkezi olarak hizmet vermekteyiz. Teknolojinin hızla geliştiği çağımızda, yaşam alanlarınızın ve ticari işletmelerinizin güvenlik standartlarını en üst seviyeye taşımayı hedefliyoruz.
+                  </p>
+
+                  <div>
+                    <h3 className="text-xl font-bold text-foreground mb-3 flex items-center gap-2">
+                      <span className="w-1 h-6 bg-primary rounded-full inline-block"></span>
+                      Misyonumuz
+                    </h3>
+                    <p className="text-muted-foreground leading-relaxed">
+                      Müşterilerimizin ihtiyaçlarını en doğru şekilde analiz ederek, yüksek kaliteli diafon ve güvenlik ürünlerini İstanbul'un tüm ilçelerinde hızlı, güvenilir ve ekonomik kurulum çözümleriyle birleştirmektir. "Kaliteye Güven" prensibimizden ödün vermeden, satış sonrası teknik desteğimizle müşteri memnuniyetini sürekli kılmak temel gayemizdir.
+                    </p>
+                  </div>
+
+                  <div>
+                    <h3 className="text-xl font-bold text-foreground mb-3 flex items-center gap-2">
+                      <span className="w-1 h-6 bg-primary rounded-full inline-block"></span>
+                      Vizyonumuz
+                    </h3>
+                    <p className="text-muted-foreground leading-relaxed">
+                      İstanbul diafon ve interkom sistemleri sektöründe, dijitalleşen dünyanın gerekliliklerine uyum sağlayan, yenilikçi yaklaşımıyla referans gösterilen ve güvenin sembolü olan lider bir marka haline gelmektir.
+                    </p>
+                  </div>
+                </div>
+              </FadeIn>
+
+              <FadeIn delay={0.2}>
+                <div>
+                  <h3 className="text-xl font-bold text-foreground mb-6 flex items-center gap-2">
+                    <span className="w-1 h-6 bg-primary rounded-full inline-block"></span>
+                    Neden Diafon İstanbul?
+                  </h3>
+                  <div className="space-y-4">
+                    {[
+                      {
+                        icon: MapPin,
+                        title: "İstanbul Genelinde Uzman Hizmet",
+                        desc: "İstanbul'un her noktasına hızlı kurulum, servis ve montaj hizmeti sunuyoruz.",
+                      },
+                      {
+                        icon: Settings,
+                        title: "Geniş Ürün Yelpazesi",
+                        desc: "Farklı marka seçenekleriyle, bütçenize ve ihtiyacınıza en uygun diafon ve interkom sistemleri.",
+                      },
+                      {
+                        icon: Video,
+                        title: "Teknolojik Çözümler",
+                        desc: "İnternet üzerinden yönetilebilir, yeni nesil görüntülü ve sesli güvenlik sistemleri.",
+                      },
+                      {
+                        icon: Users,
+                        title: "Müşteri Odaklı Yaklaşım",
+                        desc: "Siparişlerinizden montaj sürecine kadar her aşamada şeffaf bilgilendirme ve profesyonel iş takibi.",
+                      },
+                    ].map((item) => (
+                      <div key={item.title} className="flex gap-4 p-4 rounded-xl bg-background border border-border hover:border-primary/30 transition-colors">
+                        <div className="shrink-0 w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+                          <item.icon className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <p className="font-semibold text-foreground text-sm mb-1">{item.title}</p>
+                          <p className="text-muted-foreground text-sm leading-relaxed">{item.desc}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="mt-6 p-4 rounded-xl bg-primary/5 border border-primary/20">
+                    <p className="text-muted-foreground text-sm leading-relaxed">
+                      Yaşam alanlarınızı daha güvenli ve modern bir yapıya dönüştürmek için{" "}
+                      <strong className="text-foreground">İstanbul diafon sistemleri</strong>{" "}
+                      uzmanlarımızla iletişime geçebilir, ihtiyaçlarınıza özel profesyonel destek alabilirsiniz.
+                    </p>
+                    <Button
+                      onClick={() => scrollTo("iletisim")}
+                      className="mt-4 flex items-center gap-2"
+                      size="sm"
+                    >
+                      <Phone className="w-3.5 h-3.5" />
+                      Ücretsiz Keşif Talep Et
+                    </Button>
+                  </div>
+                </div>
+              </FadeIn>
+            </div>
+          </div>
+        </section>
       </main>
 
       {/* Footer */}
