@@ -560,9 +560,9 @@ export default function Home() {
                 <div
                   className="relative h-full min-h-[260px] rounded-2xl overflow-hidden group shadow-sm"
                   style={{
-                    backgroundImage: "url(/video-intercom-bg.jpg)",
+                    backgroundImage: "url(/video-intercom-bg.webp)",
                     backgroundSize: "cover",
-                    backgroundPosition: "center",
+                    backgroundPosition: "center center",
                   }}
                 >
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 group-hover:from-black/70 transition-all duration-400" />
