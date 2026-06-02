@@ -53,6 +53,7 @@ import * as z from "zod";
 import { cn } from "@/lib/utils";
 import { Link } from "wouter";
 import { getBlogPosts } from "@/pages/Blog";
+import ServiceAreas from "@/components/ServiceAreas";
 import { BookOpen, Monitor, Building2, Cpu } from "lucide-react";
 
 const formSchema = z.object({
@@ -1045,6 +1046,9 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        {/* ── Hizmet Bölgeleri ── */}
+        <ServiceAreas />
 
         {/* ── İletişim ── */}
         <section id="iletisim" className="py-24 scroll-mt-20 relative overflow-hidden">

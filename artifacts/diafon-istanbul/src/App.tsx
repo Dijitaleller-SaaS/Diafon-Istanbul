@@ -8,6 +8,7 @@ import Products from "@/pages/Products";
 import Blog from "@/pages/Blog";
 import BlogAdmin from "@/pages/BlogAdmin";
 import Hakkimizda from "@/pages/Hakkimizda";
+import BolgeDetay from "@/pages/BolgeDetay";
 import { ThemeProvider } from "@/lib/theme-context";
 
 const queryClient = new QueryClient();
@@ -21,6 +22,7 @@ function Router() {
       <Route path="/blog/admin" component={BlogAdmin} />
       <Route path="/blog/:slug" component={Blog} />
       <Route path="/blog" component={Blog} />
+      <Route path="/:slug" component={BolgeDetay} />
       <Route component={NotFound} />
     </Switch>
   );
