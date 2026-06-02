@@ -725,28 +725,23 @@ export default function Home() {
                 </div>
               </FadeIn>
 
-              <FadeIn delay={0.4} className="md:col-span-2 md:row-span-1">
-                <div className="bg-card border border-border h-full rounded-3xl p-6 flex items-center gap-6 group hover:border-primary/50 transition-colors shadow-sm relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-full -z-0"></div>
-                  <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center shrink-0 text-primary z-10">
-                    <HomeIcon className="w-8 h-8" />
+              <FadeIn delay={0.4} className="md:col-span-1 md:row-span-1">
+                <div className="bg-card border border-border h-full rounded-3xl p-6 flex flex-col group hover:border-primary/50 transition-colors shadow-sm relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-bl-full -z-0"></div>
+                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center mb-4 text-primary z-10">
+                    <HomeIcon className="w-5 h-5" />
                   </div>
-                  <div className="z-10">
-                    <h3 className="text-xl font-bold mb-2">
-                      Akıllı Ev Entegrasyonu
-                    </h3>
-                    <p className="text-sm text-muted-foreground">
-                      Diafon sisteminizi akıllı telefonunuzdan yönetin. Uzaktan
-                      kapı açma ve izleme özellikleri.
-                    </p>
-                  </div>
+                  <h3 className="text-xl font-bold mb-2 z-10">
+                    Akıllı Ev Entegrasyonu
+                  </h3>
+                  <p className="text-sm text-muted-foreground mt-auto z-10">
+                    Diafon sisteminizi akıllı telefonunuzdan yönetin. Uzaktan
+                    kapı açma ve izleme özellikleri.
+                  </p>
                 </div>
               </FadeIn>
 
-              <FadeIn
-                delay={0.5}
-                className="md:col-span-1 md:row-span-1 lg:col-span-2"
-              >
+              <FadeIn delay={0.5} className="md:col-span-1 md:row-span-1">
                 <div className="bg-card border border-border h-full rounded-3xl p-6 flex flex-col group hover:border-primary/50 transition-colors shadow-sm">
                   <div className="w-10 h-10 bg-indigo-500/10 rounded-lg flex items-center justify-center mb-4 text-indigo-600">
                     <Settings className="w-5 h-5" />
