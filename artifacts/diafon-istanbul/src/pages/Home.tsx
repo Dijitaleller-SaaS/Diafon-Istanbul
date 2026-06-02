@@ -51,6 +51,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { cn } from "@/lib/utils";
+import { Link } from "wouter";
+import { getBlogPosts } from "@/pages/Blog";
+import { BookOpen, Monitor, Building2, Cpu } from "lucide-react";
 
 const formSchema = z.object({
   fullName: z
@@ -304,6 +307,12 @@ export default function Home() {
     },
   });
 
+  const [recentPosts, setRecentPosts] = useState<ReturnType<typeof getBlogPosts>>([]);
+
+  useEffect(() => {
+    setRecentPosts(getBlogPosts().filter((p) => p.published).slice(0, 3));
+  }, []);
+
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
     toast.success("Keşif talebiniz başarıyla alındı!", {
@@ -533,6 +542,93 @@ export default function Home() {
                 </Card>
               </FadeIn>
             </div>
+          </div>
+        </section>
+
+        {/* Products Preview */}
+        <section id="urunler-onizleme" className="py-24 bg-muted/30">
+          <div className="container mx-auto px-4 md:px-6">
+            <FadeIn>
+              <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12">
+                <div>
+                  <span className="text-primary font-semibold text-sm uppercase tracking-widest mb-2 block">Ürünlerimiz</span>
+                  <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground">
+                    Profesyonel Diafon Sistemleri
+                  </h2>
+                  <p className="text-muted-foreground mt-3 max-w-xl">
+                    Konut, ofis ve sitelere özel görüntülü ve sesli diafon çözümlerimizi inceleyin.
+                  </p>
+                </div>
+                <Link href="/urunler">
+                  <Button variant="outline" className="shrink-0 gap-2">
+                    Tüm Ürünleri Gör <ChevronRight className="w-4 h-4" />
+                  </Button>
+                </Link>
+              </div>
+            </FadeIn>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[
+                {
+                  icon: Monitor,
+                  title: "Görüntülü Diafon Sistemleri",
+                  desc: "Yüksek çözünürlüklü ekranlarla kapıyı görerek konuşun. Gece görüşlü kamera seçenekleri mevcut.",
+                  color: "text-primary bg-primary/10",
+                },
+                {
+                  icon: Phone,
+                  title: "Sesli Diafon Sistemleri",
+                  desc: "Ekonomik ve güvenilir sesli iletişim. Tek daire veya çok katlı binalara uygun çözümler.",
+                  color: "text-emerald-600 bg-emerald-500/10",
+                },
+                {
+                  icon: Building2,
+                  title: "Site & Apartman Sistemleri",
+                  desc: "Çok kapılı, çok bloklu binalara özel merkezi yönetim sistemleri. Güvenlik kameraları ile entegre.",
+                  color: "text-amber-600 bg-amber-500/10",
+                },
+                {
+                  icon: HomeIcon,
+                  title: "Akıllı Ev Entegrasyonu",
+                  desc: "Telefonunuzdan kapıyı açın. Wi-Fi destekli akıllı kapı zili ve diafon sistemleri.",
+                  color: "text-violet-600 bg-violet-500/10",
+                },
+                {
+                  icon: Cpu,
+                  title: "IP & Network Sistemler",
+                  desc: "IP tabanlı diafon sistemleri ile binanızı dijital altyapıya taşıyın. Uzaktan yönetim desteği.",
+                  color: "text-sky-600 bg-sky-500/10",
+                },
+                {
+                  icon: ShieldCheck,
+                  title: "Yedek Parça & Aksesuar",
+                  desc: "Tüm marka ve modellere uyumlu orijinal ve muadil yedek parça. Uzman danışmanlık ile doğru seçim.",
+                  color: "text-rose-600 bg-rose-500/10",
+                },
+              ].map(({ icon: Icon, title, desc, color }, i) => (
+                <FadeIn key={title} delay={i * 0.07}>
+                  <Card className="bg-background border-border shadow-sm h-full hover:shadow-md transition-shadow group">
+                    <CardHeader className="pb-3">
+                      <div className={cn("w-11 h-11 rounded-xl flex items-center justify-center mb-3", color)}>
+                        <Icon className="w-5 h-5" />
+                      </div>
+                      <CardTitle className="text-base">{title}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-muted-foreground text-sm">{desc}</p>
+                    </CardContent>
+                  </Card>
+                </FadeIn>
+              ))}
+            </div>
+            <FadeIn delay={0.3}>
+              <div className="mt-10 text-center">
+                <Link href="/urunler">
+                  <Button size="lg" className="gap-2">
+                    Tüm Ürünleri ve Fiyatları Görüntüle <ChevronRight className="w-4 h-4" />
+                  </Button>
+                </Link>
+              </div>
+            </FadeIn>
           </div>
         </section>
 
@@ -953,6 +1049,74 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Blog Preview */}
+        <section id="blog-onizleme" className="py-24">
+          <div className="container mx-auto px-4 md:px-6">
+            <FadeIn>
+              <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12">
+                <div>
+                  <span className="text-primary font-semibold text-sm uppercase tracking-widest mb-2 block">Blog</span>
+                  <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground">
+                    Diafon & Güvenlik Rehberi
+                  </h2>
+                  <p className="text-muted-foreground mt-3 max-w-xl">
+                    Diafon bakımı, seçimi ve güvenlik sistemleri hakkında uzman tavsiyeler.
+                  </p>
+                </div>
+                <Link href="/blog">
+                  <Button variant="outline" className="shrink-0 gap-2">
+                    Tüm Yazıları Gör <ChevronRight className="w-4 h-4" />
+                  </Button>
+                </Link>
+              </div>
+            </FadeIn>
+            {recentPosts.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {recentPosts.map((post, i) => (
+                  <FadeIn key={post.slug} delay={i * 0.1}>
+                    <Link href={`/blog/${post.slug}`}>
+                      <Card className="bg-background border-border shadow-sm h-full hover:shadow-md transition-all hover:-translate-y-0.5 cursor-pointer group">
+                        {post.coverImage && (
+                          <div className="overflow-hidden rounded-t-lg">
+                            <img
+                              src={post.coverImage}
+                              alt={post.title}
+                              className="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-300"
+                            />
+                          </div>
+                        )}
+                        <CardHeader className="pb-2">
+                          {post.category && (
+                            <span className="text-xs font-semibold text-primary uppercase tracking-wider">{post.category}</span>
+                          )}
+                          <CardTitle className="text-base leading-snug group-hover:text-primary transition-colors">{post.title}</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-muted-foreground text-sm line-clamp-2">{post.excerpt}</p>
+                          <div className="flex items-center gap-1 mt-3 text-xs text-primary font-medium">
+                            <BookOpen className="w-3.5 h-3.5" />
+                            Devamını Oku
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </Link>
+                  </FadeIn>
+                ))}
+              </div>
+            ) : (
+              <FadeIn>
+                <div className="text-center py-12 text-muted-foreground">
+                  <BookOpen className="w-10 h-10 mx-auto mb-3 opacity-40" />
+                  <p>Henüz yayınlanmış yazı yok.</p>
+                  <Link href="/blog">
+                    <Button variant="link" className="mt-2">Blog sayfasına git</Button>
+                  </Link>
+                </div>
+              </FadeIn>
+            )}
+          </div>
+        </section>
+
         {/* ── Hakkımızda Section ── */}
         <section id="hakkimizda" className="py-24 bg-muted/30">
           <div className="container mx-auto px-4 md:px-6">
@@ -1125,7 +1289,20 @@ export default function Home() {
                 </li>
                 <li>
                   <button
-                    onClick={() => scrollTo("neden-biz")}
+                    onClick={() => scrollTo("urunler-onizleme")}
+                    className="text-secondary-foreground/80 hover:text-white transition-colors"
+                  >
+                    Ürünlerimiz
+                  </button>
+                </li>
+                <li>
+                  <Link href="/blog" className="text-secondary-foreground/80 hover:text-white transition-colors">
+                    Blog
+                  </Link>
+                </li>
+                <li>
+                  <button
+                    onClick={() => scrollTo("hakkimizda")}
                     className="text-secondary-foreground/80 hover:text-white transition-colors"
                   >
                     Hakkımızda

@@ -8,7 +8,6 @@ import { useTheme } from "@/lib/theme-context";
 const NAV_ITEMS = [
   { label: "Ana Sayfa", href: "/" },
   { label: "Ürünler", href: "/urunler" },
-  { label: "Blog", href: "/blog" },
   { label: "Hizmetler", anchor: "hizmetler" },
   { label: "Hakkımızda", anchor: "hakkimizda" },
   { label: "İletişim", anchor: "iletisim" },
@@ -32,9 +31,9 @@ export default function Navbar() {
 
   const handleAnchorClick = (anchor: string) => {
     setMobileMenuOpen(false);
-    if (location === "/") {
-      const el = document.getElementById(anchor);
-      if (el) el.scrollIntoView({ behavior: "smooth" });
+    const el = document.getElementById(anchor);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
     } else {
       window.location.href = `/#${anchor}`;
     }
