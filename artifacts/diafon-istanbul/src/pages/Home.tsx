@@ -364,6 +364,13 @@ export default function Home() {
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-6 mx-auto">
+            <a
+              href="/urunler"
+              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+              data-testid="nav-urunler"
+            >
+              Ürünler
+            </a>
             {[
               { label: "Hizmetler", id: "hizmetler" },
               { label: "Bölgeler", id: "neden-biz" },
