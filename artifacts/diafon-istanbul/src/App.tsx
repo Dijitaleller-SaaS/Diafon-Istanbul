@@ -10,21 +10,25 @@ import BlogAdmin from "@/pages/BlogAdmin";
 import Hakkimizda from "@/pages/Hakkimizda";
 import BolgeDetay from "@/pages/BolgeDetay";
 import { ThemeProvider } from "@/lib/theme-context";
+import { ScrollToTop } from "@/components/ScrollToTop";
 
 const queryClient = new QueryClient();
 
 function Router() {
   return (
-    <Switch>
-      <Route path="/" component={Home} />
-      <Route path="/urunler" component={Products} />
-      <Route path="/hakkimizda" component={Hakkimizda} />
-      <Route path="/blog/admin" component={BlogAdmin} />
-      <Route path="/blog/:slug" component={Blog} />
-      <Route path="/blog" component={Blog} />
-      <Route path="/:slug" component={BolgeDetay} />
-      <Route component={NotFound} />
-    </Switch>
+    <>
+      <ScrollToTop />
+      <Switch>
+        <Route path="/" component={Home} />
+        <Route path="/urunler" component={Products} />
+        <Route path="/hakkimizda" component={Hakkimizda} />
+        <Route path="/blog/admin" component={BlogAdmin} />
+        <Route path="/blog/:slug" component={Blog} />
+        <Route path="/blog" component={Blog} />
+        <Route path="/:slug" component={BolgeDetay} />
+        <Route component={NotFound} />
+      </Switch>
+    </>
   );
 }
 

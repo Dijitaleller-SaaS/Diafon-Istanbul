@@ -373,7 +373,7 @@ export default function Products() {
 
       <main className="flex-1">
         {/* Hero banner */}
-        <section className="py-12 md:py-16 bg-muted/40 border-b border-border">
+        <section className="pt-[calc(53px+2.5rem)] pb-10 md:pb-14 bg-muted/40 border-b border-border">
           <div className="container mx-auto px-4 md:px-6">
             <Link href="/" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-primary mb-6 transition-colors">
               <ArrowLeft className="w-4 h-4" />
