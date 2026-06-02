@@ -7,31 +7,37 @@ const districts = [
     name: "Kadıköy",
     slug: "kadikoy",
     description: "Modern diafon sistemleri için profesyonel keşif ve kurulum desteği.",
+    image: "/district-kadikoy.jpg",
   },
   {
     name: "Beşiktaş",
     slug: "besiktas",
     description: "Villa ve apartmanlar için akıllı interkom ve güvenlik çözümleri.",
+    image: "/district-besiktas.jpg",
   },
   {
     name: "Bakırköy",
     slug: "bakirkoy",
     description: "Eski tesisatın modernizasyonu ve kesintisiz dijital iletişim.",
+    image: "/district-bakirkoy.jpg",
   },
   {
     name: "Şişli",
     slug: "sisli",
     description: "Kurumsal ve bireysel bina güvenlik sistemleri kurulumu.",
+    image: "/district-sisli.jpg",
   },
   {
     name: "Sarıyer",
     slug: "sariyer",
     description: "Lüks konut projeleri için özel diafon entegrasyonları.",
+    image: "/district-sariyer.jpg",
   },
   {
     name: "Üsküdar",
     slug: "uskudar",
     description: "Apartman yönetimlerine özel profesyonel teknik danışmanlık.",
+    image: "/district-uskudar.jpg",
   },
 ];
 
@@ -78,24 +84,35 @@ const ServiceAreas = () => {
           {districts.map((d, i) => (
             <FadeIn key={d.slug} delay={0.07 * i}>
               <Link href={`/${d.slug}-diafon-kurulumu`}>
-                <div className="group bg-card border border-border rounded-2xl p-7 hover:border-primary/60 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 cursor-pointer h-full flex flex-col">
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary">
-                      <MapPin className="w-4 h-4" />
-                    </span>
-                    <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                      İstanbul
-                    </span>
-                  </div>
-                  <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">
-                    {d.name}
-                  </h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed flex-1 mb-5">
-                    {d.description}
-                  </p>
-                  <div className="flex items-center gap-1.5 text-primary text-sm font-semibold">
-                    Keşif Talebi Oluştur
-                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                <div
+                  className="group relative rounded-2xl overflow-hidden h-[260px] cursor-pointer bg-gradient-to-br from-slate-700 to-slate-900"
+                  style={{
+                    backgroundImage: `url(${d.image})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                  }}
+                >
+                  {/* Gradient overlay — image stays visible in upper half */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-black/10 group-hover:from-black/65 transition-all duration-400" />
+
+                  {/* Glassmorphism content panel at bottom */}
+                  <div className="absolute inset-x-0 bottom-0 p-5 backdrop-blur-md bg-white/10 border-t border-white/15 group-hover:bg-white/15 transition-all duration-300">
+                    <div className="flex items-center gap-1.5 mb-2">
+                      <MapPin className="w-3 h-3 text-white/70" />
+                      <span className="text-white/60 text-[10px] font-bold uppercase tracking-[0.15em]">
+                        İstanbul
+                      </span>
+                    </div>
+                    <h3 className="text-white text-lg font-bold mb-1 group-hover:text-sky-200 transition-colors duration-200">
+                      {d.name}
+                    </h3>
+                    <p className="text-white/75 text-xs leading-relaxed mb-3 line-clamp-2">
+                      {d.description}
+                    </p>
+                    <div className="flex items-center gap-1.5 text-sky-300 text-xs font-semibold">
+                      Keşif Talebi Oluştur
+                      <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1" />
+                    </div>
                   </div>
                 </div>
               </Link>
