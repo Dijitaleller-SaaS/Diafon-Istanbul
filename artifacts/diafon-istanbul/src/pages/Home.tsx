@@ -160,7 +160,7 @@ const HeroGallery = () => {
 
   return (
     <FadeIn delay={0.2} className="hidden md:block">
-      <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-muted" style={{ aspectRatio: "3/4" }}>
+      <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-muted" style={{ height: "600px" }}>
         {/* Main image */}
         <AnimatePresence mode="wait">
           <motion.img
