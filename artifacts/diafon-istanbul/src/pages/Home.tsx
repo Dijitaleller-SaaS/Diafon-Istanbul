@@ -547,29 +547,34 @@ export default function Home() {
               </FadeIn>
 
               <FadeIn delay={0.3}>
-                <Card className="bg-background border-border shadow-sm h-full hover:shadow-md transition-shadow relative overflow-hidden group">
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-full -z-10 group-hover:bg-primary/10 transition-colors"></div>
-                  <CardHeader>
-                    <div className="w-12 h-12 bg-primary/10 text-primary rounded-xl flex items-center justify-center mb-4">
+                <div
+                  className="relative h-full min-h-[260px] rounded-2xl overflow-hidden group shadow-sm"
+                  style={{
+                    backgroundImage: "url(/video-intercom-bg.jpg)",
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                  }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 group-hover:from-black/70 transition-all duration-400" />
+                  <div className="relative z-10 p-6 h-full flex flex-col justify-end">
+                    <div className="w-12 h-12 bg-white/15 backdrop-blur-sm border border-white/25 rounded-xl flex items-center justify-center mb-4 text-white">
                       <Video className="w-6 h-6" />
                     </div>
-                    <CardTitle className="text-xl">
+                    <h3 className="text-xl font-bold text-white mb-2">
                       Görüntülüye mi geçmek istiyorsunuz?
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground mb-4">
+                    </h3>
+                    <p className="text-white/75 text-sm mb-4">
                       Eski sesli diafonunuz kimin geldiğini görmenize imkan
                       tanımaz.
                     </p>
-                    <div className="flex items-start gap-2 text-sm font-medium text-primary">
+                    <div className="flex items-start gap-2 text-sm font-semibold text-sky-300">
                       <CheckCircle2 className="w-5 h-5 shrink-0" />
                       <span>
                         Yüksek çözünürlüklü ekranlarla güvenliğinizi artırın.
                       </span>
                     </div>
-                  </CardContent>
-                </Card>
+                  </div>
+                </div>
               </FadeIn>
             </div>
           </div>
