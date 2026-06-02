@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, AnimatePresence } from "framer-motion";
 import {
   Phone,
   ShieldCheck,
@@ -7,13 +7,13 @@ import {
   MapPin,
   CheckCircle2,
   ChevronRight,
+  ChevronLeft,
   Menu,
   X,
   Settings,
   Wrench,
   Video,
   Home as HomeIcon,
-  Zap,
   Sun,
   Moon,
   Users,
@@ -54,8 +54,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { cn } from "@/lib/utils";
-import { useTheme } from "@/App";
-import technicianImg from "@assets/image_1780422285396.png";
+import { useTheme } from "@/lib/theme-context";
 
 const formSchema = z.object({
   fullName: z
@@ -131,6 +130,136 @@ const FadeIn = ({
     >
       {children}
     </motion.div>
+  );
+};
+
+const HERO_IMAGES = [
+  {
+    src: "/technician.jpg",
+    alt: "Diafon İstanbul teknisyeni apartman koridorunda görüntülü diafon sistemi kuruyor",
+    label: "Montaj Hizmeti",
+  },
+  {
+    src: "/technician.jpg",
+    alt: "Görüntülü diafon panel kurulumu",
+    label: "Panel Kurulumu",
+  },
+  {
+    src: "/technician.jpg",
+    alt: "Kablo tesisat çalışması",
+    label: "Tesisat",
+  },
+];
+
+const HeroGallery = () => {
+  const [active, setActive] = useState(0);
+  const count = HERO_IMAGES.length;
+
+  const prev = () => setActive((p) => (p - 1 + count) % count);
+  const next = () => setActive((p) => (p + 1) % count);
+
+  return (
+    <FadeIn delay={0.2} className="hidden md:block">
+      <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-muted" style={{ aspectRatio: "3/4" }}>
+        {/* Main image */}
+        <AnimatePresence mode="wait">
+          <motion.img
+            key={active}
+            src={HERO_IMAGES[active].src}
+            alt={HERO_IMAGES[active].alt}
+            className="absolute inset-0 w-full h-full object-cover object-center"
+            initial={{ opacity: 0, scale: 1.03 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.97 }}
+            transition={{ duration: 0.45, ease: "easeInOut" }}
+            width={600}
+            height={800}
+            loading="eager"
+          />
+        </AnimatePresence>
+
+        {/* Dark gradient bottom */}
+        <div className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black/70 to-transparent pointer-events-none" />
+
+        {/* Trust badge */}
+        <div className="absolute bottom-4 left-4 bg-background/90 backdrop-blur-sm rounded-xl px-4 py-3 shadow-lg border border-border flex items-center gap-3">
+          <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center text-primary">
+            <ShieldCheck className="w-4 h-4" />
+          </div>
+          <div>
+            <p className="text-xs text-muted-foreground">Garantili İşçilik</p>
+            <p className="text-sm font-semibold text-foreground">7/24 Servis</p>
+          </div>
+        </div>
+
+        {/* Prev / Next */}
+        {count > 1 && (
+          <>
+            <button
+              onClick={prev}
+              aria-label="Önceki fotoğraf"
+              data-testid="gallery-prev"
+              className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-sm text-white flex items-center justify-center transition-colors"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            <button
+              onClick={next}
+              aria-label="Sonraki fotoğraf"
+              data-testid="gallery-next"
+              className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-sm text-white flex items-center justify-center transition-colors"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </>
+        )}
+
+        {/* Dot indicators */}
+        <div className="absolute bottom-4 right-4 flex gap-1.5">
+          {HERO_IMAGES.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setActive(i)}
+              aria-label={`Fotoğraf ${i + 1}`}
+              data-testid={`gallery-dot-${i}`}
+              className={cn(
+                "rounded-full transition-all duration-300",
+                i === active ? "w-5 h-2 bg-primary" : "w-2 h-2 bg-white/50 hover:bg-white/80"
+              )}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Thumbnail strip */}
+      <div className="flex gap-2 mt-3">
+        {HERO_IMAGES.map((img, i) => (
+          <button
+            key={i}
+            onClick={() => setActive(i)}
+            data-testid={`gallery-thumb-${i}`}
+            className={cn(
+              "relative flex-1 rounded-xl overflow-hidden transition-all duration-300",
+              i === active ? "ring-2 ring-primary ring-offset-2 ring-offset-background" : "opacity-60 hover:opacity-90"
+            )}
+            style={{ aspectRatio: "1" }}
+          >
+            <img
+              src={img.src}
+              alt={img.alt}
+              className="w-full h-full object-cover"
+              loading="lazy"
+            />
+            <div className={cn(
+              "absolute inset-x-0 bottom-0 py-1 text-center text-[10px] font-semibold text-white bg-black/50",
+              i === active ? "opacity-100" : "opacity-0"
+            )}>
+              {img.label}
+            </div>
+          </button>
+        ))}
+      </div>
+    </FadeIn>
   );
 };
 
@@ -447,32 +576,8 @@ export default function Home() {
                 </FadeIn>
               </div>
 
-              {/* Right: Image */}
-              <FadeIn delay={0.2} className="hidden md:block">
-                <div className="relative rounded-2xl overflow-hidden shadow-2xl aspect-[4/3]">
-                  <img
-                    src={technicianImg}
-                    alt="Diafon İstanbul teknisyeni apartman girişine görüntülü diafon sistemi kuruyor"
-                    className="w-full h-full object-cover object-center"
-                    width={800}
-                    height={600}
-                  />
-                  {/* Trust badge overlay */}
-                  <div className="absolute bottom-4 left-4 bg-background/90 backdrop-blur-sm rounded-xl px-4 py-3 shadow-lg border border-border flex items-center gap-3">
-                    <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center text-primary">
-                      <ShieldCheck className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <p className="text-xs text-muted-foreground">
-                        Garantili İşçilik
-                      </p>
-                      <p className="text-sm font-semibold text-foreground">
-                        7/24 Servis
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </FadeIn>
+              {/* Right: Image Gallery */}
+              <HeroGallery />
             </div>
 
             {/* Trust strip */}
