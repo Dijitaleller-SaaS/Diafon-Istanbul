@@ -16,26 +16,36 @@ export function useTheme() {
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [isDark, setIsDark] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     const saved = localStorage.getItem("theme");
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const startDark = saved === "dark" || (!saved && prefersDark);
+    // Default to LIGHT unless user explicitly chose dark
+    const startDark = saved === "dark";
     setIsDark(startDark);
-    document.documentElement.classList.toggle("dark", startDark);
+    if (startDark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+    setMounted(true);
   }, []);
 
   const toggleTheme = () => {
     setIsDark((prev) => {
       const next = !prev;
-      document.documentElement.classList.toggle("dark", next);
+      if (next) {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
       localStorage.setItem("theme", next ? "dark" : "light");
       return next;
     });
   };
 
   return (
-    <ThemeContext.Provider value={{ isDark, toggleTheme }}>
+    <ThemeContext.Provider value={{ isDark: mounted ? isDark : false, toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );
