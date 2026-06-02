@@ -10,18 +10,14 @@ import {
   ChevronRight,
   Star,
   CheckCircle2,
-  Menu,
-  X,
-  Sun,
-  Moon,
   Zap,
   ArrowLeft,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { useTheme } from "@/lib/theme-context";
 import { Link } from "wouter";
+import Navbar from "@/components/Navbar";
 
 const CATEGORIES = [
   {
@@ -366,113 +362,14 @@ const FadeIn = ({
 );
 
 export default function Products() {
-  const { isDark, toggleTheme } = useTheme();
   const [activeCategory, setActiveCategory] = useState("goruntulu");
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const currentCat = CATEGORIES.find((c) => c.id === activeCategory)!;
   const products = PRODUCTS[activeCategory] ?? [];
 
-  const scrollTo = (id: string) => {
-    setMobileMenuOpen(false);
-    window.location.href = `/#${id}`;
-  };
-
   return (
     <div className="flex flex-col min-h-screen bg-background">
-      {/* Navbar */}
-      <header className="sticky top-0 z-50 bg-background/90 backdrop-blur-md border-b border-border py-3">
-        <div className="container mx-auto px-4 md:px-6 flex items-center justify-between gap-4">
-          <Link href="/" className="flex items-center gap-2 shrink-0">
-            <div className="bg-primary text-primary-foreground w-8 h-8 rounded-md flex items-center justify-center font-bold text-sm">
-              D
-            </div>
-            <span className="font-display font-bold text-base tracking-tight text-foreground">
-              Diafon İstanbul
-            </span>
-          </Link>
-
-          <nav className="hidden md:flex items-center gap-6 mx-auto">
-            {[
-              { label: "Ana Sayfa", href: "/" },
-              { label: "Ürünler", href: "/urunler" },
-              { label: "Hizmetler", id: "hizmetler" },
-              { label: "İletişim", id: "iletisim" },
-            ].map((item) =>
-              item.href ? (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  className={cn(
-                    "text-sm font-medium transition-colors",
-                    item.href === "/urunler"
-                      ? "text-primary font-semibold"
-                      : "text-muted-foreground hover:text-foreground"
-                  )}
-                >
-                  {item.label}
-                </Link>
-              ) : (
-                <button
-                  key={item.label}
-                  onClick={() => scrollTo(item.id!)}
-                  className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  {item.label}
-                </button>
-              )
-            )}
-          </nav>
-
-          <div className="hidden md:flex items-center gap-3">
-            <button
-              onClick={toggleTheme}
-              className="w-9 h-9 rounded-full flex items-center justify-center border border-border text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-              aria-label="Tema değiştir"
-              data-testid="theme-toggle"
-            >
-              {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-            </button>
-            <a
-              href="tel:+905320615758"
-              className="text-sm font-medium text-foreground hidden lg:block"
-            >
-              0532 061 57 58
-            </a>
-            <Button asChild size="sm" className="rounded-md flex items-center gap-2">
-              <a href="tel:+905320615758">
-                <Phone className="w-3.5 h-3.5" />
-                Servis Çağır
-              </a>
-            </Button>
-          </div>
-
-          <div className="md:hidden flex items-center gap-2">
-            <button
-              onClick={toggleTheme}
-              className="w-9 h-9 rounded-full flex items-center justify-center border border-border text-muted-foreground"
-              aria-label="Tema değiştir"
-            >
-              {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-            </button>
-            <button
-              className="p-2 text-foreground"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            >
-              {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </button>
-          </div>
-        </div>
-      </header>
-
-      {mobileMenuOpen && (
-        <div className="fixed inset-0 top-[53px] z-40 bg-background/95 backdrop-blur-sm md:hidden flex flex-col items-center justify-center gap-6 border-t border-border">
-          <Link href="/" className="text-xl font-medium text-foreground hover:text-primary">Ana Sayfa</Link>
-          <Link href="/urunler" className="text-xl font-semibold text-primary">Ürünler</Link>
-          <button onClick={() => scrollTo("hizmetler")} className="text-xl font-medium text-foreground hover:text-primary">Hizmetler</button>
-          <button onClick={() => scrollTo("iletisim")} className="text-xl font-medium text-foreground hover:text-primary">İletişim</button>
-        </div>
-      )}
+      <Navbar />
 
       <main className="flex-1">
         {/* Hero banner */}

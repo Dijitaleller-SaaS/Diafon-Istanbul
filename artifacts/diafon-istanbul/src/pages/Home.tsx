@@ -8,16 +8,13 @@ import {
   CheckCircle2,
   ChevronRight,
   ChevronLeft,
-  Menu,
-  X,
   Settings,
   Wrench,
   Video,
   Home as HomeIcon,
-  Sun,
-  Moon,
   Users,
 } from "lucide-react";
+import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -54,7 +51,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { cn } from "@/lib/utils";
-import { useTheme } from "@/lib/theme-context";
 
 const formSchema = z.object({
   fullName: z
@@ -298,16 +294,6 @@ const Counter = ({
 };
 
 export default function Home() {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { isDark, toggleTheme } = useTheme();
-
-  useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -332,163 +318,11 @@ export default function Home() {
     if (el) {
       el.scrollIntoView({ behavior: "smooth" });
     }
-    setMobileMenuOpen(false);
   };
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
-      {/* ── Sticky Navbar ── */}
-      <header
-        className={cn(
-          "fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b",
-          isScrolled
-            ? "bg-background/90 backdrop-blur-md border-border py-3 shadow-sm"
-            : "bg-background border-border py-3"
-        )}
-        data-testid="header"
-      >
-        <div className="container mx-auto px-4 md:px-6 flex items-center justify-between gap-4">
-          {/* Logo */}
-          <button
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="flex items-center gap-2 shrink-0"
-            data-testid="logo-button"
-          >
-            <div className="bg-primary text-primary-foreground w-8 h-8 rounded-md flex items-center justify-center font-bold text-sm">
-              D
-            </div>
-            <span className="font-display font-bold text-base tracking-tight text-foreground">
-              Diafon İstanbul
-            </span>
-          </button>
-
-          {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-6 mx-auto">
-            <a
-              href="/urunler"
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-              data-testid="nav-urunler"
-            >
-              Ürünler
-            </a>
-            {[
-              { label: "Hizmetler", id: "hizmetler" },
-              { label: "Bölgeler", id: "neden-biz" },
-              { label: "Referanslar", id: "referanslar" },
-            ].map((item) => (
-              <button
-                key={item.id}
-                onClick={() => scrollTo(item.id)}
-                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-                data-testid={`nav-${item.id}`}
-              >
-                {item.label}
-              </button>
-            ))}
-          </nav>
-
-          {/* Right actions */}
-          <div className="hidden md:flex items-center gap-3">
-            {/* Theme toggle */}
-            <button
-              onClick={toggleTheme}
-              className="w-9 h-9 rounded-full flex items-center justify-center border border-border text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-              aria-label="Tema değiştir"
-              data-testid="theme-toggle"
-            >
-              {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-            </button>
-
-            <a
-              href="tel:+905320615758"
-              className="text-sm font-medium text-foreground hidden lg:block"
-              data-testid="nav-phone"
-            >
-              0532 061 57 58
-            </a>
-
-            <Button
-              onClick={() => scrollTo("iletisim")}
-              size="sm"
-              className="rounded-md flex items-center gap-2"
-              data-testid="nav-cta"
-            >
-              <Phone className="w-3.5 h-3.5" />
-              Servis Çağır
-            </Button>
-          </div>
-
-          {/* Mobile right */}
-          <div className="md:hidden flex items-center gap-2">
-            <button
-              onClick={toggleTheme}
-              className="w-9 h-9 rounded-full flex items-center justify-center border border-border text-muted-foreground"
-              aria-label="Tema değiştir"
-              data-testid="theme-toggle-mobile"
-            >
-              {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-            </button>
-            <button
-              className="p-2 text-foreground"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              data-testid="mobile-menu-toggle"
-            >
-              {mobileMenuOpen ? (
-                <X className="h-6 w-6" />
-              ) : (
-                <Menu className="h-6 w-6" />
-              )}
-            </button>
-          </div>
-        </div>
-      </header>
-
-      {/* Mobile Menu */}
-      {mobileMenuOpen && (
-        <div className="fixed inset-0 top-[53px] z-40 bg-background/95 backdrop-blur-sm md:hidden flex flex-col items-center justify-center gap-8 border-t border-border">
-          <button
-            onClick={() => scrollTo("hizmetler")}
-            className="text-xl font-medium text-foreground hover:text-primary"
-          >
-            Hizmetler
-          </button>
-          <button
-            onClick={() => scrollTo("neden-biz")}
-            className="text-xl font-medium text-foreground hover:text-primary"
-          >
-            Bölgeler
-          </button>
-          <button
-            onClick={() => scrollTo("referanslar")}
-            className="text-xl font-medium text-foreground hover:text-primary"
-          >
-            Referanslar
-          </button>
-          <button
-            onClick={() => scrollTo("sss")}
-            className="text-xl font-medium text-foreground hover:text-primary"
-          >
-            SSS
-          </button>
-          <div className="flex flex-col items-center gap-4 mt-4">
-            <a
-              href="tel:+905320615758"
-              className="text-lg font-semibold flex items-center gap-2 text-primary"
-            >
-              <Phone className="h-5 w-5" />
-              0532 061 57 58
-            </a>
-            <Button
-              size="lg"
-              onClick={() => scrollTo("iletisim")}
-              className="rounded-md w-full max-w-[200px] flex items-center gap-2"
-            >
-              <Phone className="w-4 h-4" />
-              Servis Çağır
-            </Button>
-          </div>
-        </div>
-      )}
+      <Navbar />
 
       <main className="flex-1">
         {/* ── Hero Section ── */}
