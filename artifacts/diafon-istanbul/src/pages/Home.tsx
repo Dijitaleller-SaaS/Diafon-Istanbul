@@ -497,53 +497,63 @@ export default function Home() {
           <div className="container mx-auto px-4 md:px-6">
             <div className="grid md:grid-cols-3 gap-6">
               <FadeIn delay={0.1}>
-                <Card className="bg-background border-border shadow-sm h-full hover:shadow-md transition-shadow relative overflow-hidden group">
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-destructive/5 rounded-bl-full -z-10 group-hover:bg-destructive/10 transition-colors"></div>
-                  <CardHeader>
-                    <div className="w-12 h-12 bg-destructive/10 text-destructive rounded-xl flex items-center justify-center mb-4">
+                <div
+                  className="relative h-full min-h-[260px] rounded-2xl overflow-hidden group shadow-sm"
+                  style={{
+                    backgroundImage: "url(/technician.jpg)",
+                    backgroundSize: "cover",
+                    backgroundPosition: "center top",
+                  }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 group-hover:from-black/70 transition-all duration-400" />
+                  <div className="relative z-10 p-6 h-full flex flex-col justify-end">
+                    <div className="w-12 h-12 bg-white/15 backdrop-blur-sm border border-white/25 rounded-xl flex items-center justify-center mb-4 text-white">
                       <Settings className="w-6 h-6" />
                     </div>
-                    <CardTitle className="text-xl">
+                    <h3 className="text-xl font-bold text-white mb-2">
                       Kapı ziliniz çalışmıyor mu?
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground mb-4">
+                    </h3>
+                    <p className="text-white/75 text-sm mb-4">
                       Kopan kablolar, arızalı paneller veya çalışmayan zil
                       butonları güvenliğinizi riske atar.
                     </p>
-                    <div className="flex items-start gap-2 text-sm font-medium text-primary">
+                    <div className="flex items-start gap-2 text-sm font-semibold text-sky-300">
                       <CheckCircle2 className="w-5 h-5 shrink-0" />
                       <span>Hızlı arıza tespiti ve aynı gün kalıcı onarım.</span>
                     </div>
-                  </CardContent>
-                </Card>
+                  </div>
+                </div>
               </FadeIn>
 
               <FadeIn delay={0.2}>
-                <Card className="bg-background border-border shadow-sm h-full hover:shadow-md transition-shadow relative overflow-hidden group">
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-bl-full -z-10 group-hover:bg-amber-500/10 transition-colors"></div>
-                  <CardHeader>
-                    <div className="w-12 h-12 bg-amber-500/10 text-amber-600 rounded-xl flex items-center justify-center mb-4">
+                <div
+                  className="relative h-full min-h-[260px] rounded-2xl overflow-hidden group shadow-sm"
+                  style={{
+                    backgroundImage: "url(/wiring-bg.jpg)",
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                  }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 group-hover:from-black/70 transition-all duration-400" />
+                  <div className="relative z-10 p-6 h-full flex flex-col justify-end">
+                    <div className="w-12 h-12 bg-white/15 backdrop-blur-sm border border-white/25 rounded-xl flex items-center justify-center mb-4 text-white">
                       <Wrench className="w-6 h-6" />
                     </div>
-                    <CardTitle className="text-xl">
+                    <h3 className="text-xl font-bold text-white mb-2">
                       Eski tesisat sorunları?
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground mb-4">
+                    </h3>
+                    <p className="text-white/75 text-sm mb-4">
                       Yıllanmış, paslanmış veya yanlış çekilmiş kablolar sürekli
                       arızalara neden olur.
                     </p>
-                    <div className="flex items-start gap-2 text-sm font-medium text-primary">
+                    <div className="flex items-start gap-2 text-sm font-semibold text-sky-300">
                       <CheckCircle2 className="w-5 h-5 shrink-0" />
                       <span>
                         Eski kabloları yeniliyor, sistemi modernize ediyoruz.
                       </span>
                     </div>
-                  </CardContent>
-                </Card>
+                  </div>
+                </div>
               </FadeIn>
 
               <FadeIn delay={0.3}>
