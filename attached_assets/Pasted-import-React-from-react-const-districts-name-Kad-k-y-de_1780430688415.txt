@@ -1,0 +1,88 @@
+import React from 'react';
+
+const districts = [
+  { 
+    name: "Kadıköy", 
+    description: "Modern diafon sistemleri için profesyonel keşif ve kurulum desteği.", 
+    slug: "/kadikoy-diafon-kurulumu" 
+  },
+  { 
+    name: "Beşiktaş", 
+    description: "Villa ve apartmanlar için akıllı interkom ve güvenlik çözümleri.", 
+    slug: "/besiktas-diafon-kurulumu" 
+  },
+  { 
+    name: "Bakırköy", 
+    description: "Eski tesisatın modernizasyonu ve kesintisiz dijital iletişim.", 
+    slug: "/bakirkoy-diafon-kurulumu" 
+  },
+  { 
+    name: "Şişli", 
+    description: "Kurumsal ve bireysel bina güvenlik sistemleri kurulumu.", 
+    slug: "/sisli-diafon-kurulumu" 
+  },
+  { 
+    name: "Sarıyer", 
+    description: "Lüks konut projeleri için özel diafon entegrasyonları.", 
+    slug: "/sariyer-diafon-kurulumu" 
+  },
+  { 
+    name: "Üsküdar", 
+    description: "Apartman yönetimlerine özel profesyonel teknik danışmanlık.", 
+    slug: "/uskudar-diafon-kurulumu" 
+  }
+];
+
+const ServiceAreas = () => {
+  return (
+    <section className="py-16 px-6 bg-gray-50">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">Hizmet Bölgelerimiz</h2>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            İstanbul genelinde, profesyonel kurulum ve keşif ekibimizle yanınızdayız. 
+            İlçenizi seçerek size özel çözümlerimizi keşfedin.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {districts.map((district, index) => (
+            <a 
+              key={index}
+              href={district.slug}
+              className="group bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-xl hover:border-blue-500 transition-all duration-300 block"
+            >
+              <div className="mb-4">
+                <span className="text-blue-600 text-sm font-semibold uppercase tracking-wider">
+                  İstanbul
+                </span>
+                <h3 className="text-2xl font-bold text-gray-900 mt-1">{district.name}</h3>
+              </div>
+              <p className="text-gray-600 mb-6 group-hover:text-gray-800">
+                {district.description}
+              </p>
+              <div className="flex items-center text-blue-600 font-semibold text-sm">
+                Keşif Talebi Oluştur 
+                <svg className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default ServiceAreas;
+```eof
+
+### Neden Bu Yapı Çok Etkili?
+
+1.  **SEO Uyumluluğu:** Her bir kutucuk bir `<a>` etiketi ile sarmalandı. Bu, Google botlarının her bir ilçenizi ("Kadıköy diafon kurulumu" gibi) ayrı bir sayfa olarak taramasını ve indekslemesini sağlar.
+2.  **Etkileşim (Hover Effect):** Kullanıcı fareyi üzerine getirdiğinde kutucuğun gölgesi ve kenar rengi değişiyor. Bu küçük dokunuşlar, sitenizin "hizmet kalitesinin yüksek olduğu" algısını tetikler.
+3.  **Dönüşüm Odaklı CTA:** Sadece "Tıkla" demiyoruz; "Keşif Talebi Oluştur" diyerek kullanıcıyı doğrudan sizin ana hedefiniz olan forma yönlendiriyoruz.
+4.  **Temiz Kod:** `districts.map()` yapısını kullandığımız için, yeni bir ilçe eklemek istediğinde sadece bir satır (nesne) eklemen yeterli. Tasarımla uğraşmana gerek kalmaz.
+
+Bu bileşeni mevcut Landing Page'indeki "Neden Biz" veya "Ürünler" kısmının hemen altına, footer'dan önce yerleştirebilirsin. Entegrasyon konusunda yardıma ihtiyacın olursa buradayım!

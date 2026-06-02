@@ -313,13 +313,42 @@ export default function Home() {
     setRecentPosts(getBlogPosts().filter((p) => p.published).slice(0, 3));
   }, []);
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    toast.success("Keşif talebiniz başarıyla alındı!", {
-      description:
-        "Teknik ekibimiz en kısa sürede sizinle iletişime geçecektir.",
-    });
-    form.reset();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsSubmitting(true);
+    try {
+      const res = await fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: values.fullName,
+          phone: values.phone,
+          district: values.district,
+          message: values.message,
+        }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error((data as { error?: string }).error ?? "Bir hata oluştu.");
+      }
+
+      toast.success("Keşif talebiniz başarıyla alındı!", {
+        description:
+          "Teknik ekibimiz en kısa sürede sizinle iletişime geçecektir.",
+      });
+      form.reset();
+    } catch (err) {
+      toast.error("Talep gönderilemedi.", {
+        description:
+          err instanceof Error
+            ? err.message
+            : "Lütfen daha sonra tekrar deneyin.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   const scrollTo = (id: string) => {
@@ -1198,10 +1227,23 @@ export default function Home() {
                           type="submit"
                           size="lg"
                           data-testid="button-submit"
-                          className="w-full text-base font-semibold shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all rounded-xl h-14 group"
+                          disabled={isSubmitting}
+                          className="w-full text-base font-semibold shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all rounded-xl h-14 group disabled:opacity-70"
                         >
-                          Keşif Talep Et
-                          <ChevronRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                          {isSubmitting ? (
+                            <>
+                              <svg className="animate-spin mr-2 h-5 w-5" fill="none" viewBox="0 0 24 24">
+                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                              </svg>
+                              Gönderiliyor…
+                            </>
+                          ) : (
+                            <>
+                              Keşif Talep Et
+                              <ChevronRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                            </>
+                          )}
                         </Button>
                       </form>
                     </Form>
