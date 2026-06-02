@@ -780,205 +780,72 @@ export default function Home() {
         {/* FAQ + Form */}
         <section id="sss" className="py-24">
           <div className="container mx-auto px-4 md:px-6">
-            <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-start">
-              {/* FAQ */}
-              <div>
-                <FadeIn>
-                  <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                    Sıkça Sorulan Sorular
-                  </h2>
-                  <p className="text-muted-foreground mb-8">
-                    Aklınıza takılan soruların cevaplarını burada
-                    bulabilirsiniz. Daha fazla bilgi için hemen arayın.
-                  </p>
-                </FadeIn>
-
-                <FadeIn delay={0.2}>
-                  <Accordion type="single" collapsible className="w-full">
-                    <AccordionItem value="item-1" className="border-border">
-                      <AccordionTrigger className="text-left font-medium hover:text-primary transition-colors">
-                        Eski diafon tesisatım görüntülü sistem için çalışır mı?
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground">
-                        Ücretsiz keşif ziyaretimizde mevcut kabloların uygunluğunu
-                        test ediyoruz. Uygunsa kablo değişikliği yapmadan yeni
-                        sistemi kurabiliriz, böylece maliyet düşer.
-                      </AccordionContent>
-                    </AccordionItem>
-                    <AccordionItem value="item-2" className="border-border">
-                      <AccordionTrigger className="text-left font-medium hover:text-primary transition-colors">
-                        Montaj ne kadar sürer?
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground">
-                        Standart bir apartman için kablo değişimi dahil kurulum
-                        genellikle 1 günde tamamlanır. Büyük siteler için süre
-                        daire sayısına göre değişir.
-                      </AccordionContent>
-                    </AccordionItem>
-                    <AccordionItem value="item-3" className="border-border">
-                      <AccordionTrigger className="text-left font-medium hover:text-primary transition-colors">
-                        Hangi markalarla çalışıyorsunuz?
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground">
-                        Audio, Netelsan, Nade, Multitek gibi Türkiye'nin en çok
-                        tercih edilen ve yedek parçası bol, garantili
-                        yerli/yabancı markalarıyla çalışıyoruz.
-                      </AccordionContent>
-                    </AccordionItem>
-                    <AccordionItem value="item-4" className="border-border">
-                      <AccordionTrigger className="text-left font-medium hover:text-primary transition-colors">
-                        Görüntülü diafonun fiyatı nedir?
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground">
-                        Fiyatlar daire sayısına, seçilen markaya, ekran boyutuna
-                        ve kablo yenilemesi gerekip gerekmediğine göre değişir.
-                        Kesin fiyat için ücretsiz keşif talep edebilirsiniz.
-                      </AccordionContent>
-                    </AccordionItem>
-                    <AccordionItem value="item-5" className="border-border">
-                      <AccordionTrigger className="text-left font-medium hover:text-primary transition-colors">
-                        İstanbul'un her ilçesine hizmet veriyor musunuz?
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground">
-                        Evet, İstanbul'un 39 ilçesinde Anadolu ve Avrupa yakası
-                        fark etmeksizin mobil servis araçlarımızla hizmet
-                        veriyoruz.
-                      </AccordionContent>
-                    </AccordionItem>
-                  </Accordion>
-                </FadeIn>
+            <FadeIn>
+              <div className="text-center max-w-2xl mx-auto mb-12">
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                  Sıkça Sorulan Sorular
+                </h2>
+                <p className="text-muted-foreground">
+                  Aklınıza takılan soruların cevaplarını burada bulabilirsiniz. Daha fazla bilgi için hemen arayın.
+                </p>
               </div>
-
-              {/* Form */}
-              <div id="iletisim" className="relative scroll-mt-24">
-                <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 to-cyan-400/20 blur-2xl -z-10 rounded-3xl opacity-50"></div>
-                <Card className="border-border/50 shadow-2xl bg-card/95 backdrop-blur-xl rounded-2xl overflow-hidden relative">
-                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-cyan-400"></div>
-                  <CardHeader className="pb-4">
-                    <CardTitle className="text-2xl font-bold">
-                      Ücretsiz Keşif Talep Edin
-                    </CardTitle>
-                    <CardDescription className="text-base">
-                      Formu doldurun, uzman ekibimiz sizi arayıp ücretsiz keşif
-                      randevusu oluştursun.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <Form {...form}>
-                      <form
-                        onSubmit={form.handleSubmit(onSubmit)}
-                        className="space-y-5"
-                      >
-                        <FormField
-                          control={form.control}
-                          name="fullName"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel className="text-foreground">
-                                Ad Soyad / Yönetici
-                              </FormLabel>
-                              <FormControl>
-                                <Input
-                                  placeholder="Örn: Ahmet Yılmaz"
-                                  data-testid="input-fullname"
-                                  className="bg-background border-border focus-visible:ring-primary"
-                                  {...field}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                          <FormField
-                            control={form.control}
-                            name="phone"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel className="text-foreground">
-                                  Telefon Numarası
-                                </FormLabel>
-                                <FormControl>
-                                  <Input
-                                    type="tel"
-                                    placeholder="05XX XXX XX XX"
-                                    data-testid="input-phone"
-                                    className="bg-background border-border focus-visible:ring-primary"
-                                    {...field}
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          <FormField
-                            control={form.control}
-                            name="district"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel className="text-foreground">
-                                  İlçe
-                                </FormLabel>
-                                <Select
-                                  onValueChange={field.onChange}
-                                  defaultValue={field.value}
-                                >
-                                  <FormControl>
-                                    <SelectTrigger
-                                      data-testid="select-district"
-                                      className="bg-background border-border focus-visible:ring-primary"
-                                    >
-                                      <SelectValue placeholder="İlçe seçiniz" />
-                                    </SelectTrigger>
-                                  </FormControl>
-                                  <SelectContent className="max-h-[300px]">
-                                    {ISTANBUL_DISTRICTS.map((d) => (
-                                      <SelectItem key={d} value={d}>
-                                        {d}
-                                      </SelectItem>
-                                    ))}
-                                  </SelectContent>
-                                </Select>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                        </div>
-                        <FormField
-                          control={form.control}
-                          name="message"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel className="text-foreground">
-                                Talebiniz / Daire Sayısı
-                              </FormLabel>
-                              <FormControl>
-                                <Textarea
-                                  placeholder="Örn: 15 daireli apartmanımız için görüntülü diafon fiyatı almak istiyoruz."
-                                  className="min-h-[100px] resize-none bg-background border-border focus-visible:ring-primary"
-                                  data-testid="textarea-message"
-                                  {...field}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        <Button
-                          type="submit"
-                          size="lg"
-                          data-testid="button-submit"
-                          className="w-full text-base font-semibold shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all rounded-xl h-14 group"
-                        >
-                          Keşif Talep Et
-                          <ChevronRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                        </Button>
-                      </form>
-                    </Form>
-                  </CardContent>
-                </Card>
+            </FadeIn>
+            <FadeIn delay={0.2}>
+              <div className="max-w-3xl mx-auto">
+                <Accordion type="single" collapsible className="w-full">
+                  <AccordionItem value="item-1" className="border-border">
+                    <AccordionTrigger className="text-left font-medium hover:text-primary transition-colors">
+                      Eski diafon tesisatım görüntülü sistem için çalışır mı?
+                    </AccordionTrigger>
+                    <AccordionContent className="text-muted-foreground">
+                      Ücretsiz keşif ziyaretimizde mevcut kabloların uygunluğunu
+                      test ediyoruz. Uygunsa kablo değişikliği yapmadan yeni
+                      sistemi kurabiliriz, böylece maliyet düşer.
+                    </AccordionContent>
+                  </AccordionItem>
+                  <AccordionItem value="item-2" className="border-border">
+                    <AccordionTrigger className="text-left font-medium hover:text-primary transition-colors">
+                      Montaj ne kadar sürer?
+                    </AccordionTrigger>
+                    <AccordionContent className="text-muted-foreground">
+                      Standart bir apartman için kablo değişimi dahil kurulum
+                      genellikle 1 günde tamamlanır. Büyük siteler için süre
+                      daire sayısına göre değişir.
+                    </AccordionContent>
+                  </AccordionItem>
+                  <AccordionItem value="item-3" className="border-border">
+                    <AccordionTrigger className="text-left font-medium hover:text-primary transition-colors">
+                      Hangi markalarla çalışıyorsunuz?
+                    </AccordionTrigger>
+                    <AccordionContent className="text-muted-foreground">
+                      Audio, Netelsan, Nade, Multitek gibi Türkiye'nin en çok
+                      tercih edilen ve yedek parçası bol, garantili
+                      yerli/yabancı markalarıyla çalışıyoruz.
+                    </AccordionContent>
+                  </AccordionItem>
+                  <AccordionItem value="item-4" className="border-border">
+                    <AccordionTrigger className="text-left font-medium hover:text-primary transition-colors">
+                      Görüntülü diafonun fiyatı nedir?
+                    </AccordionTrigger>
+                    <AccordionContent className="text-muted-foreground">
+                      Fiyatlar daire sayısına, seçilen markaya, ekran boyutuna
+                      ve kablo yenilemesi gerekip gerekmediğine göre değişir.
+                      Kesin fiyat için ücretsiz keşif talep edebilirsiniz.
+                    </AccordionContent>
+                  </AccordionItem>
+                  <AccordionItem value="item-5" className="border-border">
+                    <AccordionTrigger className="text-left font-medium hover:text-primary transition-colors">
+                      İstanbul'un her ilçesine hizmet veriyor musunuz?
+                    </AccordionTrigger>
+                    <AccordionContent className="text-muted-foreground">
+                      Evet, İstanbul'un 39 ilçesinde Anadolu ve Avrupa yakası
+                      fark etmeksizin mobil servis araçlarımızla hizmet
+                      veriyoruz.
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
               </div>
-            </div>
+            </FadeIn>
           </div>
         </section>
 
@@ -1117,109 +984,229 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── Hakkımızda Section ── */}
-        <section id="hakkimizda" className="py-24 bg-muted/30">
+        {/* ── Hakkımızda Teaser ── */}
+        <section id="hakkimizda" className="py-20 bg-muted/30">
           <div className="container mx-auto px-4 md:px-6">
-            <FadeIn>
-              <div className="text-center max-w-2xl mx-auto mb-16">
-                <div className="inline-flex items-center gap-2 text-xs font-semibold tracking-widest uppercase text-primary mb-4">
+            <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-10 md:gap-16">
+              <FadeIn className="flex-1">
+                <div className="inline-flex items-center gap-2 text-xs font-semibold tracking-widest uppercase text-primary mb-3">
                   <span className="w-8 h-px bg-primary"></span>
                   Kurumsal
-                  <span className="w-8 h-px bg-primary"></span>
                 </div>
-                <h2 className="text-3xl md:text-4xl font-bold mb-4">Hakkımızda</h2>
+                <h2 className="text-3xl md:text-4xl font-display font-bold mb-4">
+                  Diafon İstanbul Hakkında
+                </h2>
+                <p className="text-muted-foreground leading-relaxed mb-6 max-w-xl">
+                  10 yılı aşkın deneyimimizle İstanbul'un 39 ilçesinde diafon montajı, kablo yenileme ve 7/24 arıza servisi sunuyoruz. "Kaliteye Güven" prensibimizle yüzlerce konut ve ticari projeye imza attık.
+                </p>
+                <div className="flex flex-wrap gap-3 mb-8">
+                  {[["500+", "Başarılı Montaj"], ["10+", "Yıl Deneyim"], ["39", "İlçe"], ["7/24", "Servis"]].map(([val, label]) => (
+                    <div key={label} className="text-center bg-background border border-border rounded-xl px-5 py-3 min-w-[90px]">
+                      <div className="text-xl font-bold text-primary">{val}</div>
+                      <div className="text-xs text-muted-foreground mt-0.5">{label}</div>
+                    </div>
+                  ))}
+                </div>
+                <Link href="/hakkimizda">
+                  <Button variant="outline" className="gap-2">
+                    Devamını Gör <ChevronRight className="w-4 h-4" />
+                  </Button>
+                </Link>
+              </FadeIn>
+            </div>
+          </div>
+        </section>
+
+        {/* ── İletişim ── */}
+        <section id="iletisim" className="py-24 scroll-mt-20 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-cyan-500/5 -z-10" />
+          <div className="container mx-auto px-4 md:px-6">
+            <FadeIn>
+              <div className="text-center max-w-2xl mx-auto mb-14">
+                <span className="text-primary font-semibold text-sm uppercase tracking-widest mb-2 block">İletişim</span>
+                <h2 className="text-3xl md:text-4xl font-display font-bold mb-3">
+                  Ücretsiz Keşif Talep Edin
+                </h2>
                 <p className="text-muted-foreground text-lg">
-                  İstanbul Diafon ve Güvenlik Sistemleri Kurulum Merkezi
+                  Formu doldurun veya hemen arayın. Uzman ekibimiz 24 saat hizmetinizde.
                 </p>
               </div>
             </FadeIn>
 
-            <div className="grid md:grid-cols-2 gap-12 items-start max-w-5xl mx-auto">
-              <FadeIn delay={0.1}>
-                <div className="space-y-6">
-                  <p className="text-muted-foreground leading-relaxed">
-                    <strong className="text-foreground">Diafon İstanbul</strong> olarak, İstanbul genelinde diafon sistemleri, interkom teknolojileri, akıllı bina çözümleri ve profesyonel güvenlik sistemleri konusunda öncü bir kurulum merkezi olarak hizmet vermekteyiz. Teknolojinin hızla geliştiği çağımızda, yaşam alanlarınızın ve ticari işletmelerinizin güvenlik standartlarını en üst seviyeye taşımayı hedefliyoruz.
-                  </p>
-
-                  <div>
-                    <h3 className="text-xl font-bold text-foreground mb-3 flex items-center gap-2">
-                      <span className="w-1 h-6 bg-primary rounded-full inline-block"></span>
-                      Misyonumuz
-                    </h3>
-                    <p className="text-muted-foreground leading-relaxed">
-                      Müşterilerimizin ihtiyaçlarını en doğru şekilde analiz ederek, yüksek kaliteli diafon ve güvenlik ürünlerini İstanbul'un tüm ilçelerinde hızlı, güvenilir ve ekonomik kurulum çözümleriyle birleştirmektir. "Kaliteye Güven" prensibimizden ödün vermeden, satış sonrası teknik desteğimizle müşteri memnuniyetini sürekli kılmak temel gayemizdir.
-                    </p>
+            <div className="grid lg:grid-cols-5 gap-8 lg:gap-12 items-start max-w-6xl mx-auto">
+              {/* Sol: İletişim Bilgileri + Harita */}
+              <FadeIn delay={0.1} className="lg:col-span-2 space-y-4">
+                <a
+                  href="tel:+905320615758"
+                  className="flex items-start gap-4 p-4 rounded-xl bg-background border border-border hover:border-primary/40 transition-colors group"
+                >
+                  <div className="w-11 h-11 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-white transition-colors">
+                    <Phone className="w-5 h-5" />
                   </div>
-
                   <div>
-                    <h3 className="text-xl font-bold text-foreground mb-3 flex items-center gap-2">
-                      <span className="w-1 h-6 bg-primary rounded-full inline-block"></span>
-                      Vizyonumuz
-                    </h3>
-                    <p className="text-muted-foreground leading-relaxed">
-                      İstanbul diafon ve interkom sistemleri sektöründe, dijitalleşen dünyanın gerekliliklerine uyum sağlayan, yenilikçi yaklaşımıyla referans gösterilen ve güvenin sembolü olan lider bir marka haline gelmektir.
-                    </p>
+                    <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider mb-0.5">Telefon</p>
+                    <p className="text-lg font-bold text-primary">0532 061 57 58</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">7/24 Teknik Destek</p>
                   </div>
+                </a>
+
+                <div className="flex items-start gap-4 p-4 rounded-xl bg-background border border-border">
+                  <div className="w-11 h-11 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                    <MapPin className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider mb-0.5">Adres</p>
+                    <p className="font-semibold text-foreground">Nispetiye Caddesi No:24</p>
+                    <p className="text-sm text-muted-foreground">34340 Beşiktaş, İstanbul</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4 p-4 rounded-xl bg-background border border-border">
+                  <div className="w-11 h-11 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                    <Clock className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider mb-0.5">Çalışma Saatleri</p>
+                    <p className="font-semibold text-foreground">Pzt – Cts: 08:00 – 20:00</p>
+                    <p className="text-sm text-muted-foreground">Pazar: Acil servis</p>
+                  </div>
+                </div>
+
+                {/* Google Haritası */}
+                <div className="rounded-xl overflow-hidden border border-border shadow-sm" style={{ height: 220 }}>
+                  <iframe
+                    title="Diafon İstanbul Konum"
+                    src="https://maps.google.com/maps?q=Nispetiye+Caddesi+No:24+Be%C5%9Fikta%C5%9F+%C4%B0stanbul&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  />
                 </div>
               </FadeIn>
 
-              <FadeIn delay={0.2}>
-                <div>
-                  <h3 className="text-xl font-bold text-foreground mb-6 flex items-center gap-2">
-                    <span className="w-1 h-6 bg-primary rounded-full inline-block"></span>
-                    Neden Diafon İstanbul?
-                  </h3>
-                  <div className="space-y-4">
-                    {[
-                      {
-                        icon: MapPin,
-                        title: "İstanbul Genelinde Uzman Hizmet",
-                        desc: "İstanbul'un her noktasına hızlı kurulum, servis ve montaj hizmeti sunuyoruz.",
-                      },
-                      {
-                        icon: Settings,
-                        title: "Geniş Ürün Yelpazesi",
-                        desc: "Farklı marka seçenekleriyle, bütçenize ve ihtiyacınıza en uygun diafon ve interkom sistemleri.",
-                      },
-                      {
-                        icon: Video,
-                        title: "Teknolojik Çözümler",
-                        desc: "İnternet üzerinden yönetilebilir, yeni nesil görüntülü ve sesli güvenlik sistemleri.",
-                      },
-                      {
-                        icon: Users,
-                        title: "Müşteri Odaklı Yaklaşım",
-                        desc: "Siparişlerinizden montaj sürecine kadar her aşamada şeffaf bilgilendirme ve profesyonel iş takibi.",
-                      },
-                    ].map((item) => (
-                      <div key={item.title} className="flex gap-4 p-4 rounded-xl bg-background border border-border hover:border-primary/30 transition-colors">
-                        <div className="shrink-0 w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
-                          <item.icon className="w-5 h-5" />
+              {/* Sağ: Form */}
+              <FadeIn delay={0.2} className="lg:col-span-3 relative">
+                <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 to-cyan-400/20 blur-2xl -z-10 rounded-3xl opacity-50"></div>
+                <Card className="border-border/50 shadow-2xl bg-card/95 backdrop-blur-xl rounded-2xl overflow-hidden relative">
+                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-cyan-400"></div>
+                  <CardHeader className="pb-4">
+                    <CardTitle className="text-2xl font-bold">
+                      Ücretsiz Keşif Talep Edin
+                    </CardTitle>
+                    <CardDescription className="text-base">
+                      Formu doldurun, uzman ekibimiz sizi arayıp ücretsiz keşif
+                      randevusu oluştursun.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <Form {...form}>
+                      <form
+                        onSubmit={form.handleSubmit(onSubmit)}
+                        className="space-y-5"
+                      >
+                        <FormField
+                          control={form.control}
+                          name="fullName"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-foreground">Ad Soyad / Yönetici</FormLabel>
+                              <FormControl>
+                                <Input
+                                  placeholder="Örn: Ahmet Yılmaz"
+                                  data-testid="input-fullname"
+                                  className="bg-background border-border focus-visible:ring-primary"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                          <FormField
+                            control={form.control}
+                            name="phone"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-foreground">Telefon Numarası</FormLabel>
+                                <FormControl>
+                                  <Input
+                                    type="tel"
+                                    placeholder="05XX XXX XX XX"
+                                    data-testid="input-phone"
+                                    className="bg-background border-border focus-visible:ring-primary"
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={form.control}
+                            name="district"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-foreground">İlçe</FormLabel>
+                                <Select
+                                  onValueChange={field.onChange}
+                                  defaultValue={field.value}
+                                >
+                                  <FormControl>
+                                    <SelectTrigger
+                                      data-testid="select-district"
+                                      className="bg-background border-border focus-visible:ring-primary"
+                                    >
+                                      <SelectValue placeholder="İlçe seçiniz" />
+                                    </SelectTrigger>
+                                  </FormControl>
+                                  <SelectContent className="max-h-[300px]">
+                                    {ISTANBUL_DISTRICTS.map((d) => (
+                                      <SelectItem key={d} value={d}>
+                                        {d}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
                         </div>
-                        <div>
-                          <p className="font-semibold text-foreground text-sm mb-1">{item.title}</p>
-                          <p className="text-muted-foreground text-sm leading-relaxed">{item.desc}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="mt-6 p-4 rounded-xl bg-primary/5 border border-primary/20">
-                    <p className="text-muted-foreground text-sm leading-relaxed">
-                      Yaşam alanlarınızı daha güvenli ve modern bir yapıya dönüştürmek için{" "}
-                      <strong className="text-foreground">İstanbul diafon sistemleri</strong>{" "}
-                      uzmanlarımızla iletişime geçebilir, ihtiyaçlarınıza özel profesyonel destek alabilirsiniz.
-                    </p>
-                    <Button
-                      onClick={() => scrollTo("iletisim")}
-                      className="mt-4 flex items-center gap-2"
-                      size="sm"
-                    >
-                      <Phone className="w-3.5 h-3.5" />
-                      Ücretsiz Keşif Talep Et
-                    </Button>
-                  </div>
-                </div>
+                        <FormField
+                          control={form.control}
+                          name="message"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-foreground">Talebiniz / Daire Sayısı</FormLabel>
+                              <FormControl>
+                                <Textarea
+                                  placeholder="Örn: 15 daireli apartmanımız için görüntülü diafon fiyatı almak istiyoruz."
+                                  className="min-h-[120px] resize-none bg-background border-border focus-visible:ring-primary"
+                                  data-testid="textarea-message"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <Button
+                          type="submit"
+                          size="lg"
+                          data-testid="button-submit"
+                          className="w-full text-base font-semibold shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all rounded-xl h-14 group"
+                        >
+                          Keşif Talep Et
+                          <ChevronRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                        </Button>
+                      </form>
+                    </Form>
+                  </CardContent>
+                </Card>
               </FadeIn>
             </div>
           </div>
