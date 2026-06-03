@@ -390,8 +390,20 @@ export default function Home() {
 
       <main className="flex-1">
         {/* ── Hero Section ── */}
-        <section className="pt-[53px] min-h-[92vh] flex items-center bg-background overflow-hidden">
-          <div className="container mx-auto px-4 md:px-6">
+        <section className="pt-[53px] min-h-[92vh] flex items-center bg-background overflow-hidden relative">
+          {/* Decorative background — visible on right, fades away before text */}
+          <div
+            className="absolute inset-0 pointer-events-none select-none"
+            style={{
+              backgroundImage: "url('/hero-intercom-bg.png')",
+              backgroundSize: "cover",
+              backgroundPosition: "right center",
+              maskImage: "linear-gradient(to right, transparent 0%, transparent 42%, black 68%, black 100%)",
+              WebkitMaskImage: "linear-gradient(to right, transparent 0%, transparent 42%, black 68%, black 100%)",
+              opacity: 0.22,
+            }}
+          />
+          <div className="container mx-auto px-4 md:px-6 relative z-10">
             <div className="grid md:grid-cols-2 gap-10 md:gap-16 items-center py-16 md:py-24">
               {/* Left: Text content */}
               <div>

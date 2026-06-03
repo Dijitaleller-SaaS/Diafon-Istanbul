@@ -1,0 +1,8 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "Df6dXXu3mjAHuHI2NwAa_"
+uri = "file://artifacts/diafon-istanbul/public/hero-intercom-bg.png"
+type = "image"
+title = "dark intercom panel hero background"
