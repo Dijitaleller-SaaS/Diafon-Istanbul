@@ -18,6 +18,7 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { Link } from "wouter";
 import Navbar from "@/components/Navbar";
+import QuoteModal from "@/components/QuoteModal";
 
 const CATEGORIES = [
   {
@@ -363,6 +364,13 @@ const FadeIn = ({
 
 export default function Products() {
   const [activeCategory, setActiveCategory] = useState("goruntulu");
+  const [quoteOpen, setQuoteOpen] = useState(false);
+  const [quoteProduct, setQuoteProduct] = useState("");
+
+  const openQuote = (productName: string) => {
+    setQuoteProduct(productName);
+    setQuoteOpen(true);
+  };
 
   const currentCat = CATEGORIES.find((c) => c.id === activeCategory)!;
   const products = PRODUCTS[activeCategory] ?? [];
@@ -370,6 +378,7 @@ export default function Products() {
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <Navbar />
+      <QuoteModal isOpen={quoteOpen} onClose={() => setQuoteOpen(false)} productName={quoteProduct} />
 
       <main className="flex-1">
         {/* Hero banner */}
@@ -532,13 +541,11 @@ export default function Products() {
                           {/* CTA */}
                           <div className="mt-auto flex gap-2">
                             <Button
-                              asChild
                               size="sm"
                               className="flex-1 rounded-lg group-hover:shadow-sm group-hover:shadow-primary/20"
+                              onClick={() => openQuote(product.name)}
                             >
-                              <a href={`/#iletisim?urun=${encodeURIComponent(product.name)}`}>
-                                Fiyat Al
-                              </a>
+                              Fiyat Al
                             </Button>
                             <Button
                               asChild

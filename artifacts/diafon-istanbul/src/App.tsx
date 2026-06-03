@@ -9,6 +9,9 @@ import Blog from "@/pages/Blog";
 import BlogAdmin from "@/pages/BlogAdmin";
 import Hakkimizda from "@/pages/Hakkimizda";
 import BolgeDetay from "@/pages/BolgeDetay";
+import GoruntulDiafon from "@/pages/GoruntulDiafon";
+import GoruntulDiafonFiyatlari from "@/pages/GoruntulDiafonFiyatlari";
+import GoruntulDiafonModelleri from "@/pages/GoruntulDiafonModelleri";
 import { ThemeProvider } from "@/lib/theme-context";
 import { ScrollToTop } from "@/components/ScrollToTop";
 
@@ -22,6 +25,9 @@ function Router() {
         <Route path="/" component={Home} />
         <Route path="/urunler" component={Products} />
         <Route path="/hakkimizda" component={Hakkimizda} />
+        <Route path="/goruntulu-diafon" component={GoruntulDiafon} />
+        <Route path="/goruntulu-diafon-fiyatlari" component={GoruntulDiafonFiyatlari} />
+        <Route path="/goruntulu-diafon-modelleri" component={GoruntulDiafonModelleri} />
         <Route path="/blog/admin" component={BlogAdmin} />
         <Route path="/blog/:slug" component={Blog} />
         <Route path="/blog" component={Blog} />
