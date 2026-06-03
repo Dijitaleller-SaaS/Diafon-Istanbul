@@ -391,18 +391,24 @@ export default function Home() {
       <main className="flex-1">
         {/* ── Hero Section ── */}
         <section className="pt-[53px] min-h-[92vh] flex items-center bg-background overflow-hidden relative">
-          {/* Decorative background — visible on right, fades away before text */}
+          {/* Decorative background — fades from left (text safe) to visible on right */}
           <div
-            className="absolute inset-0 pointer-events-none select-none"
-            style={{
-              backgroundImage: "url('/hero-intercom-bg.png')",
-              backgroundSize: "cover",
-              backgroundPosition: "right center",
-              maskImage: "linear-gradient(to right, transparent 0%, transparent 42%, black 68%, black 100%)",
-              WebkitMaskImage: "linear-gradient(to right, transparent 0%, transparent 42%, black 68%, black 100%)",
-              opacity: 0.22,
-            }}
-          />
+            className="absolute inset-0 pointer-events-none select-none overflow-hidden"
+          >
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                backgroundImage: "url('/hero-intercom-bg.jpg')",
+                backgroundSize: "cover",
+                backgroundPosition: "center center",
+                filter: "blur(3px) brightness(1.05)",
+                transform: "scale(1.04)",
+                maskImage: "linear-gradient(to right, transparent 0%, transparent 30%, rgba(0,0,0,0.5) 55%, rgba(0,0,0,0.65) 100%)",
+                WebkitMaskImage: "linear-gradient(to right, transparent 0%, transparent 30%, rgba(0,0,0,0.5) 55%, rgba(0,0,0,0.65) 100%)",
+              }}
+            />
+          </div>
           <div className="container mx-auto px-4 md:px-6 relative z-10">
             <div className="grid md:grid-cols-2 gap-10 md:gap-16 items-center py-16 md:py-24">
               {/* Left: Text content */}
