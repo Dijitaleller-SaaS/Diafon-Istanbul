@@ -1,8 +1,37 @@
 uploads = []
-outputs = []
 
 [[generated]]
 id = "Df6dXXu3mjAHuHI2NwAa_"
 uri = "file://artifacts/diafon-istanbul/public/hero-intercom-bg.png"
 type = "image"
 title = "dark intercom panel hero background"
+
+[[outputs]]
+id = "MSP8y1Te11HvblSGsk_if"
+uri = "file://attached_assets/image_search/option_1.jpg"
+type = "image"
+title = "1️⃣ Koyu kapı + duvar intercom"
+
+[[outputs]]
+id = "n2l4az3xRlXX3vDvEUzfr"
+uri = "file://attached_assets/image_search/option_2.jpg"
+type = "image"
+title = "2️⃣ Koyu duvar - keypad intercom"
+
+[[outputs]]
+id = "XmWOTgzDcqapPFIWcGnkp"
+uri = "file://attached_assets/image_search/option_3.jpg"
+type = "image"
+title = "3️⃣ İkili siyah doorbells - mavi ışık"
+
+[[outputs]]
+id = "D6pE07GoY-Pk4XdEkA7e2"
+uri = "file://attached_assets/image_search/option_4.jpg"
+type = "image"
+title = "4️⃣ Apartman girişi diyafon - koyu"
+
+[[outputs]]
+id = "I1nTYrStLhIMY2vXuGNZY"
+uri = "file://attached_assets/image_search/option_5.jpg"
+type = "image"
+title = "5️⃣ Close-up şık intercom - koyu duvar"
