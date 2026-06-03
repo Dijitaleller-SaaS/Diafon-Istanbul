@@ -43,6 +43,8 @@ const districts = [
 ];
 
 const GAP = 20;
+const PEEK_RATIO = 0.84;
+const SWIPE_HINT_KEY = "diafon-swipe-hint-shown";
 
 function getVisibleCount(width: number): number {
   if (width >= 1024) return 3;
@@ -76,15 +78,20 @@ const ServiceAreas = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const controls = useAnimation();
 
+  const isMobile = visibleCount === 1;
+
   const totalPages = Math.ceil(districts.length / visibleCount);
   const maxIndex = districts.length - visibleCount;
 
   const getCardWidth = useCallback(() => {
     if (!containerRef.current) return 0;
     const containerWidth = containerRef.current.offsetWidth;
+    if (isMobile) {
+      return containerWidth * PEEK_RATIO;
+    }
     const totalGap = GAP * (visibleCount - 1);
     return (containerWidth - totalGap) / visibleCount;
-  }, [visibleCount]);
+  }, [visibleCount, isMobile]);
 
   const getTranslateX = useCallback(
     (index: number) => {
@@ -120,6 +127,28 @@ const ServiceAreas = () => {
     controls.start({ x: getTranslateX(clamped), transition: { duration: 0 } });
   }, [visibleCount]);
 
+  useEffect(() => {
+    if (!isMobile) return;
+    if (sessionStorage.getItem(SWIPE_HINT_KEY)) return;
+
+    const timer = setTimeout(async () => {
+      const cardWidth = getCardWidth();
+      if (cardWidth === 0) return;
+      const nudge = Math.round(cardWidth * 0.18);
+      await controls.start({
+        x: -nudge,
+        transition: { duration: 0.38, ease: "easeOut" },
+      });
+      await controls.start({
+        x: 0,
+        transition: { duration: 0.32, ease: "easeIn" },
+      });
+      sessionStorage.setItem(SWIPE_HINT_KEY, "1");
+    }, 800);
+
+    return () => clearTimeout(timer);
+  }, [isMobile, controls, getCardWidth]);
+
   const handleDragEnd = (_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     const cardWidth = getCardWidth();
     const threshold = cardWidth * 0.25;
@@ -133,6 +162,10 @@ const ServiceAreas = () => {
   };
 
   const currentPage = Math.round(currentIndex / Math.max(1, visibleCount));
+
+  const cardWidthStyle = isMobile
+    ? `${PEEK_RATIO * 100}%`
+    : `calc((100% - ${GAP * (visibleCount - 1)}px) / ${visibleCount})`;
 
   return (
     <section id="hizmet-bolgeleri" className="py-24 bg-muted/30 scroll-mt-20">
@@ -202,7 +235,7 @@ const ServiceAreas = () => {
                   <div
                     key={d.slug}
                     className="flex-shrink-0"
-                    style={{ width: `calc((100% - ${GAP * (visibleCount - 1)}px) / ${visibleCount})` }}
+                    style={{ width: cardWidthStyle }}
                   >
                     <Link href={`/${d.slug}-diafon-kurulumu`}>
                       <div
