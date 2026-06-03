@@ -316,6 +316,31 @@ export default function Home() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const [miniName, setMiniName] = useState("");
+  const [miniPhone, setMiniPhone] = useState("");
+  const [miniLoading, setMiniLoading] = useState(false);
+  const [miniSent, setMiniSent] = useState(false);
+
+  async function handleMiniSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!miniName.trim() || !miniPhone.trim()) return;
+    setMiniLoading(true);
+    try {
+      const res = await fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: miniName, phone: miniPhone, district: "", message: "Mini form - hızlı keşif talebi" }),
+      });
+      if (!res.ok) throw new Error();
+      setMiniSent(true);
+      toast.success("Keşif talebiniz alındı!", { description: "Ekibimiz kısa sürede sizi arayacak." });
+    } catch {
+      toast.error("Gönderim başarısız", { description: "Lütfen daha sonra tekrar deneyin." });
+    } finally {
+      setMiniLoading(false);
+    }
+  }
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
     try {
@@ -397,7 +422,7 @@ export default function Home() {
 
                 <FadeIn
                   delay={0.3}
-                  className="flex flex-wrap items-center gap-3 mb-10"
+                  className="flex flex-wrap items-center gap-3 mb-4"
                 >
                   <Button
                     size="lg"
@@ -434,6 +459,17 @@ export default function Home() {
                       WhatsApp
                     </a>
                   </Button>
+                </FadeIn>
+
+                <FadeIn delay={0.35} className="mb-8">
+                  <a
+                    href="#hizli-kesif"
+                    className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline underline-offset-2"
+                  >
+                    <ShieldCheck className="w-4 h-4" />
+                    Ücretsiz keşif randevusu al
+                    <ChevronRight className="w-3.5 h-3.5" />
+                  </a>
                 </FadeIn>
 
                 <FadeIn delay={0.4}>
@@ -586,6 +622,85 @@ export default function Home() {
                       </span>
                     </div>
                   </div>
+                </div>
+              </FadeIn>
+            </div>
+          </div>
+        </section>
+
+        {/* ── Hızlı Keşif CTA Şeridi ── */}
+        <section id="hizli-kesif" className="py-14 md:py-20 bg-gradient-to-br from-primary via-primary to-cyan-600 relative overflow-hidden scroll-mt-16">
+          <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: "radial-gradient(circle at 20% 50%, white 1px, transparent 1px), radial-gradient(circle at 80% 80%, white 1px, transparent 1px)", backgroundSize: "40px 40px" }} />
+          <div className="container mx-auto px-4 md:px-6 relative z-10">
+            <div className="grid md:grid-cols-2 gap-10 md:gap-16 items-center max-w-5xl mx-auto">
+              {/* Sol: pitch */}
+              <FadeIn>
+                <p className="text-white/60 text-xs font-bold uppercase tracking-widest mb-3">Taahhütsüz · Ücretsiz · Hızlı</p>
+                <h2 className="text-2xl md:text-3xl font-bold text-white mb-6 leading-snug">
+                  Ücretsiz Keşif Talep Edin —<br className="hidden md:block" /> Uzman Aynı Gün Gelir
+                </h2>
+                <ul className="space-y-3">
+                  {[
+                    "Uzman teknisyen aynı gün keşfe gelir",
+                    "Mevcut tesisat ücretsiz analiz edilir",
+                    "Kesin fiyat garantili yazılı teklif sunulur",
+                  ].map((item) => (
+                    <li key={item} className="flex items-center gap-2.5 text-white/85 text-sm">
+                      <CheckCircle2 className="w-4 h-4 text-white/90 shrink-0" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </FadeIn>
+
+              {/* Sağ: mini form */}
+              <FadeIn delay={0.15}>
+                <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 md:p-7">
+                  {miniSent ? (
+                    <div className="text-center py-6">
+                      <div className="w-14 h-14 rounded-full bg-white/20 flex items-center justify-center mx-auto mb-4">
+                        <CheckCircle2 className="w-7 h-7 text-white" />
+                      </div>
+                      <p className="text-white font-bold text-lg mb-1">Talebiniz alındı!</p>
+                      <p className="text-white/70 text-sm">Ekibimiz kısa süre içinde sizi arayacak.</p>
+                    </div>
+                  ) : (
+                    <form onSubmit={handleMiniSubmit} className="space-y-3">
+                      <p className="text-white font-semibold text-base mb-4">Formu doldurun, sizi arayalım</p>
+                      <input
+                        type="text"
+                        placeholder="Adınız Soyadınız"
+                        value={miniName}
+                        onChange={(e) => setMiniName(e.target.value)}
+                        required
+                        className="w-full px-4 py-3 rounded-xl bg-white/15 border border-white/25 text-white placeholder:text-white/50 text-sm focus:outline-none focus:ring-2 focus:ring-white/40"
+                      />
+                      <input
+                        type="tel"
+                        placeholder="Telefon Numaranız"
+                        value={miniPhone}
+                        onChange={(e) => setMiniPhone(e.target.value)}
+                        required
+                        className="w-full px-4 py-3 rounded-xl bg-white/15 border border-white/25 text-white placeholder:text-white/50 text-sm focus:outline-none focus:ring-2 focus:ring-white/40"
+                      />
+                      <button
+                        type="submit"
+                        disabled={miniLoading}
+                        className="w-full py-3 rounded-xl bg-white text-primary font-bold text-sm hover:bg-white/90 active:scale-[.98] transition-all disabled:opacity-60 flex items-center justify-center gap-2 mt-1"
+                      >
+                        {miniLoading ? (
+                          <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                          </svg>
+                        ) : (
+                          <ChevronRight className="w-4 h-4" />
+                        )}
+                        Ücretsiz Keşif Talep Et
+                      </button>
+                      <p className="text-white/40 text-xs text-center pt-1">Hiçbir taahhüt yoktur · 7/24 hizmet</p>
+                    </form>
+                  )}
                 </div>
               </FadeIn>
             </div>
