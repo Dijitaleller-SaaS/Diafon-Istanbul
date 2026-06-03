@@ -166,9 +166,14 @@ export default function GoruntulDiafonFiyatlari() {
                       </li>
                     ))}
                   </ul>
-                  <Button onClick={() => setQuoteOpen(true)} className="w-full rounded-xl" variant={tier.popular ? "default" : "outline"}>
-                    Fiyat Al
-                  </Button>
+                  <div className="flex flex-col gap-2">
+                    <Button onClick={() => setQuoteOpen(true)} className="w-full rounded-xl" variant={tier.popular ? "default" : "outline"}>
+                      Fiyat Al
+                    </Button>
+                    <Link href="/urunler" className="flex items-center justify-center gap-1 text-xs text-primary hover:underline font-medium py-1 transition-colors">
+                      Detaylı İncele <ArrowRight className="w-3 h-3" />
+                    </Link>
+                  </div>
                 </motion.div>
               ))}
             </div>

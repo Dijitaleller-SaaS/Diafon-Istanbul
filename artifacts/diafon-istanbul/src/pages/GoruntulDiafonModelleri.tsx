@@ -198,13 +198,18 @@ export default function GoruntulDiafonModelleri() {
                         <p className="text-xs text-muted-foreground">Fiyat aralığı</p>
                         <p className="font-bold text-primary text-sm">{cat.priceRange}</p>
                       </div>
-                      <Button
-                        size="sm"
-                        className="rounded-xl"
-                        onClick={() => { setSelectedModel(cat.title); setQuoteOpen(true); }}
-                      >
-                        Fiyat Al
-                      </Button>
+                      <div className="flex items-center gap-2">
+                        <Link href="/urunler" className="flex items-center gap-1 text-xs text-primary hover:underline font-medium transition-colors">
+                          Detaylı İncele <ArrowRight className="w-3 h-3" />
+                        </Link>
+                        <Button
+                          size="sm"
+                          className="rounded-xl"
+                          onClick={() => { setSelectedModel(cat.title); setQuoteOpen(true); }}
+                        >
+                          Fiyat Al
+                        </Button>
+                      </div>
                     </div>
                   </motion.div>
                 );
