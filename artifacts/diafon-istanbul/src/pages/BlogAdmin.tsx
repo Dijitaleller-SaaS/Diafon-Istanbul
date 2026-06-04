@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "wouter";
-import { PlusCircle, Pencil, Trash2, Eye, EyeOff, LogOut, ArrowLeft, Save, X, Layout, FileText, Settings, MessageSquare, Phone, Mail, CheckCircle2, Clock, RefreshCw } from "lucide-react";
+import { PlusCircle, Pencil, Trash2, Eye, EyeOff, LogOut, ArrowLeft, Save, X, Layout, FileText, Settings, MessageSquare, Phone, Mail, CheckCircle2, Clock, RefreshCw, Package, Star, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -628,11 +628,393 @@ function TaleplerPanel() {
   );
 }
 
+const URUN_CATEGORIES = [
+  { id: "goruntulu", label: "Görüntülü Diafonlar" },
+  { id: "goruntusuz", label: "Görüntüsüz Diafonlar" },
+  { id: "telefonlar", label: "Telefonlar" },
+  { id: "zil-panelleri", label: "Zil Panelleri" },
+  { id: "giris-kontrol", label: "Giriş Kontrol Ürünler" },
+  { id: "kamera", label: "Güvenlik Kamera Sistemleri" },
+  { id: "paket", label: "Audio Diafon Paket Fiyatları" },
+];
+
+interface ApiProduct {
+  id: number;
+  slug: string;
+  name: string;
+  category: string;
+  brand: string;
+  short_desc: string;
+  long_desc: string;
+  images: string;
+  features: string;
+  tag: string | null;
+  tag_color: string | null;
+  rating: number;
+  featured: boolean;
+  sort_order: number;
+}
+
+interface UrunFormData {
+  name: string;
+  slug: string;
+  category: string;
+  brand: string;
+  short_desc: string;
+  long_desc: string;
+  imagesText: string;
+  featuresText: string;
+  tag: string;
+  tag_color: string;
+  rating: number;
+  featured: boolean;
+  sort_order: number;
+}
+
+const EMPTY_URUN: UrunFormData = {
+  name: "", slug: "", category: "goruntulu", brand: "",
+  short_desc: "", long_desc: "", imagesText: "", featuresText: "",
+  tag: "", tag_color: "", rating: 5, featured: false, sort_order: 0,
+};
+
+function urunToForm(p: ApiProduct): UrunFormData {
+  let imgs: string[] = [];
+  let feats: string[] = [];
+  try { imgs = JSON.parse(p.images); } catch { /* */ }
+  try { feats = JSON.parse(p.features); } catch { /* */ }
+  return {
+    name: p.name, slug: p.slug, category: p.category, brand: p.brand,
+    short_desc: p.short_desc, long_desc: p.long_desc,
+    imagesText: imgs.join("\n"), featuresText: feats.join("\n"),
+    tag: p.tag ?? "", tag_color: p.tag_color ?? "",
+    rating: p.rating, featured: p.featured, sort_order: p.sort_order,
+  };
+}
+
+function formToPayload(f: UrunFormData) {
+  return {
+    ...f,
+    images: JSON.stringify(f.imagesText.split("\n").map((s) => s.trim()).filter(Boolean)),
+    features: JSON.stringify(f.featuresText.split("\n").map((s) => s.trim()).filter(Boolean)),
+    tag: f.tag || null,
+    tag_color: f.tag_color || null,
+    password: ADMIN_PASSWORD,
+  };
+}
+
+function UrunForm({ product, onSave, onCancel }: {
+  product: ApiProduct | null;
+  onSave: () => void;
+  onCancel: () => void;
+}) {
+  const [form, setForm] = useState<UrunFormData>(product ? urunToForm(product) : EMPTY_URUN);
+  const [saving, setSaving] = useState(false);
+
+  const set = <K extends keyof UrunFormData>(k: K, v: UrunFormData[K]) =>
+    setForm((p) => ({ ...p, [k]: v }));
+
+  const handleNameChange = (name: string) => {
+    setForm((p) => ({
+      ...p, name,
+      slug: p.slug || name.toLowerCase()
+        .replace(/ğ/g, "g").replace(/ü/g, "u").replace(/ş/g, "s")
+        .replace(/ı/g, "i").replace(/ö/g, "o").replace(/ç/g, "c")
+        .replace(/[^a-z0-9\s-]/g, "").trim().replace(/\s+/g, "-"),
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.name.trim() || !form.slug.trim()) {
+      toast.error("Ürün adı ve slug zorunludur.");
+      return;
+    }
+    setSaving(true);
+    try {
+      const method = product ? "PUT" : "POST";
+      const url = product ? `/api/products/${product.slug}` : "/api/products";
+      const res = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formToPayload(form)),
+      });
+      if (!res.ok) {
+        const d = await res.json().catch(() => ({}));
+        toast.error((d as { error?: string }).error ?? "Kayıt başarısız.");
+        return;
+      }
+      toast.success(product ? "Ürün güncellendi." : "Ürün eklendi.");
+      onSave();
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 bg-background overflow-y-auto">
+      <div className="container mx-auto px-4 md:px-6 py-8 max-w-3xl">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
+            <Package className="w-5 h-5 text-primary" />
+            {product ? "Ürünü Düzenle" : "Yeni Ürün"}
+          </h2>
+          <button onClick={onCancel} className="p-2 rounded-md hover:bg-muted text-muted-foreground"><X className="w-5 h-5" /></button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-1">Ürün Adı *</label>
+              <Input value={form.name} onChange={(e) => handleNameChange(e.target.value)} placeholder="Görüntülü Diafon Seti" autoFocus />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-1">URL (slug) *</label>
+              <Input value={form.slug} onChange={(e) => set("slug", e.target.value)} placeholder="goruntulu-diafon-seti" />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-1">Kategori</label>
+              <select
+                value={form.category}
+                onChange={(e) => set("category", e.target.value)}
+                className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring"
+              >
+                {URUN_CATEGORIES.map((c) => <option key={c.id} value={c.id}>{c.label}</option>)}
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-1">Marka</label>
+              <Input value={form.brand} onChange={(e) => set("brand", e.target.value)} placeholder="Audio, Netelsan, Nade…" />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-foreground mb-1">Kısa Açıklama</label>
+            <Input value={form.short_desc} onChange={(e) => set("short_desc", e.target.value)} placeholder="Ürünün kısa özeti (liste sayfasında)" />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-foreground mb-1">Görsel URL'leri (her satıra bir URL)</label>
+            <Textarea value={form.imagesText} onChange={(e) => set("imagesText", e.target.value)} placeholder={"https://example.com/img1.jpg\nhttps://example.com/img2.jpg"} rows={3} className="font-mono text-sm" />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-foreground mb-1">Özellikler (her satıra bir özellik)</label>
+            <Textarea value={form.featuresText} onChange={(e) => set("featuresText", e.target.value)} placeholder={"HD kamera\nGece görüşü\nMobil uygulama"} rows={4} className="font-mono text-sm" />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-foreground mb-1">Uzun Açıklama (HTML desteklenir)</label>
+            <Textarea value={form.long_desc} onChange={(e) => set("long_desc", e.target.value)} placeholder="<h2>Başlık</h2><p>Detaylı açıklama...</p>" rows={6} className="font-mono text-sm" />
+          </div>
+
+          <div className="grid grid-cols-3 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-1">Rozet Metni</label>
+              <Input value={form.tag} onChange={(e) => set("tag", e.target.value)} placeholder="Çok Satan" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-1">Rozet Rengi (Tailwind)</label>
+              <Input value={form.tag_color} onChange={(e) => set("tag_color", e.target.value)} placeholder="bg-primary text-white" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-1">Sıra No</label>
+              <Input type="number" min="0" value={form.sort_order} onChange={(e) => set("sort_order", Number(e.target.value))} />
+            </div>
+          </div>
+
+          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-2">
+              <label className="text-sm font-medium text-foreground">Puan</label>
+              <div className="flex gap-1">
+                {[1,2,3,4,5].map((n) => (
+                  <button key={n} type="button" onClick={() => set("rating", n)}>
+                    <Star className={`w-5 h-5 ${n <= form.rating ? "fill-amber-400 text-amber-400" : "text-border"}`} />
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <input type="checkbox" id="featured" checked={form.featured} onChange={(e) => set("featured", e.target.checked)} className="w-4 h-4 accent-primary" />
+              <label htmlFor="featured" className="text-sm font-medium text-foreground">Öne Çıkan Ürün</label>
+            </div>
+          </div>
+
+          <div className="flex gap-3 pt-2">
+            <Button type="submit" disabled={saving} className="flex items-center gap-2">
+              <Save className="w-4 h-4" />
+              {saving ? "Kaydediliyor…" : "Kaydet"}
+            </Button>
+            <Button type="button" variant="outline" onClick={onCancel}>İptal</Button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+function UrunlerPanel({ onNewUrun }: { onNewUrun: () => void }) {
+  const [products, setProducts] = useState<ApiProduct[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [editingProduct, setEditingProduct] = useState<ApiProduct | null | "new">(null);
+  const [deletingSlug, setDeletingSlug] = useState<string | null>(null);
+
+  const fetchProducts = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/products");
+      if (!res.ok) throw new Error();
+      const data = await res.json();
+      const list: ApiProduct[] = Array.isArray(data) ? data : [];
+      if (list.length === 0) {
+        const seedRes = await fetch("/api/products/seed", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ password: ADMIN_PASSWORD }),
+        });
+        if (seedRes.ok) {
+          const seeded = await seedRes.json();
+          if (seeded.seeded > 0) {
+            toast.success(`${seeded.seeded} varsayılan ürün yüklendi.`);
+            const res2 = await fetch("/api/products");
+            const data2 = await res2.json();
+            setProducts(Array.isArray(data2) ? data2 : []);
+            return;
+          }
+        }
+      }
+      setProducts(list);
+    } catch {
+      toast.error("Ürünler yüklenemedi.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => { fetchProducts(); }, []);
+
+  const handleDelete = async (slug: string, name: string) => {
+    if (!confirm(`"${name}" ürününü silmek istediğinize emin misiniz?`)) return;
+    setDeletingSlug(slug);
+    try {
+      const res = await fetch(`/api/products/${slug}?password=${ADMIN_PASSWORD}`, { method: "DELETE" });
+      if (!res.ok) throw new Error();
+      setProducts((prev) => prev.filter((p) => p.slug !== slug));
+      toast.success("Ürün silindi.");
+    } catch {
+      toast.error("Silme başarısız.");
+    } finally {
+      setDeletingSlug(null);
+    }
+  };
+
+  const categoryCount: Record<string, number> = {};
+  for (const p of products) {
+    categoryCount[p.category] = (categoryCount[p.category] ?? 0) + 1;
+  }
+
+  if (editingProduct !== null) {
+    return (
+      <UrunForm
+        product={editingProduct === "new" ? null : editingProduct}
+        onSave={() => { setEditingProduct(null); fetchProducts(); }}
+        onCancel={() => setEditingProduct(null)}
+      />
+    );
+  }
+
+  if (loading) return (
+    <div className="py-16 text-center text-muted-foreground text-sm flex flex-col items-center gap-2">
+      <RefreshCw className="w-5 h-5 animate-spin" /> Yükleniyor…
+    </div>
+  );
+
+  return (
+    <div className="space-y-4 max-w-4xl">
+      <div className="flex items-center justify-between">
+        <div className="flex gap-3 text-sm text-muted-foreground flex-wrap">
+          <span>{products.length} ürün</span>
+          {products.filter((p) => p.featured).length > 0 && (
+            <span className="text-primary font-medium">{products.filter((p) => p.featured).length} öne çıkan</span>
+          )}
+          {Object.entries(categoryCount).map(([cat, count]) => (
+            <span key={cat} className="text-xs bg-muted px-2 py-0.5 rounded-full">{URUN_CATEGORIES.find(c => c.id === cat)?.label ?? cat}: {count}</span>
+          ))}
+        </div>
+        <div className="flex gap-2">
+          <Button size="sm" variant="outline" onClick={fetchProducts} className="flex items-center gap-1.5">
+            <RefreshCw className="w-3.5 h-3.5" /> Yenile
+          </Button>
+          <Button size="sm" onClick={() => setEditingProduct("new")} className="flex items-center gap-1.5">
+            <PlusCircle className="w-3.5 h-3.5" /> Yeni Ürün
+          </Button>
+        </div>
+      </div>
+
+      {products.length === 0 ? (
+        <div className="text-center py-16 text-muted-foreground">
+          <Package className="w-10 h-10 mx-auto mb-3 opacity-30" />
+          <p>Henüz ürün yok.</p>
+        </div>
+      ) : (
+        <div className="space-y-2">
+          {products.map((product) => {
+            let imgs: string[] = [];
+            try { imgs = JSON.parse(product.images); } catch { /* */ }
+            const thumb = imgs[0];
+            return (
+              <div key={product.slug} className="flex items-center justify-between gap-4 p-4 bg-card border border-border rounded-xl hover:shadow-sm transition-shadow">
+                <div className="flex items-center gap-4 flex-1 min-w-0">
+                  {thumb ? (
+                    <img src={thumb} alt={product.name} className="w-12 h-10 object-cover rounded-lg shrink-0 bg-muted" />
+                  ) : (
+                    <div className="w-12 h-10 bg-muted rounded-lg shrink-0 flex items-center justify-center text-muted-foreground">
+                      <Package className="w-5 h-5" />
+                    </div>
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-0.5 flex-wrap">
+                      <span className="font-medium text-foreground truncate">{product.name}</span>
+                      {product.featured && <Badge className="text-xs bg-primary/10 text-primary border-primary/20">Öne Çıkan</Badge>}
+                      {product.tag && <span className="text-xs text-muted-foreground">— {product.tag}</span>}
+                    </div>
+                    <p className="text-xs text-muted-foreground">{URUN_CATEGORIES.find((c) => c.id === product.category)?.label ?? product.category} · {product.brand} · {product.slug}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-1 shrink-0">
+                  <Link href={`/urunler/${product.slug}`} target="_blank">
+                    <button className="p-2 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors" title="Görüntüle">
+                      <Eye className="w-4 h-4" />
+                    </button>
+                  </Link>
+                  <button onClick={() => setEditingProduct(product)} className="p-2 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors" title="Düzenle">
+                    <Pencil className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => handleDelete(product.slug, product.name)}
+                    disabled={deletingSlug === product.slug}
+                    className="p-2 rounded-md hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors disabled:opacity-50"
+                    title="Sil"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function BlogAdmin() {
   const [authed, setAuthed] = useState(false);
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [editing, setEditing] = useState<BlogPost | null | "new">(null);
-  const [activeTab, setActiveTab] = useState<"blog" | "homepage" | "ayarlar" | "talepler">("blog");
+  const [activeTab, setActiveTab] = useState<"blog" | "homepage" | "ayarlar" | "talepler" | "urunler">("blog");
 
   useEffect(() => {
     if (localStorage.getItem(AUTH_KEY) === "1") setAuthed(true);
@@ -720,12 +1102,23 @@ export default function BlogAdmin() {
               >
                 <MessageSquare className="w-3.5 h-3.5" /> Talepler
               </button>
+              <button
+                onClick={() => setActiveTab("urunler")}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${activeTab === "urunler" ? "bg-background shadow-sm text-foreground" : "text-muted-foreground hover:text-foreground"}`}
+              >
+                <Package className="w-3.5 h-3.5" /> Ürünler
+              </button>
             </div>
           </div>
           <div className="flex items-center gap-3">
             {activeTab === "blog" && (
               <Button size="sm" onClick={() => setEditing("new")} className="flex items-center gap-2">
                 <PlusCircle className="w-4 h-4" /> Yeni Yazı
+              </Button>
+            )}
+            {activeTab === "urunler" && (
+              <Button size="sm" onClick={() => { setActiveTab("urunler"); }} className="flex items-center gap-2">
+                <Tag className="w-4 h-4" /> Ürünler
               </Button>
             )}
             <button
@@ -746,6 +1139,8 @@ export default function BlogAdmin() {
           <AyarlarEditor />
         ) : activeTab === "talepler" ? (
           <TaleplerPanel />
+        ) : activeTab === "urunler" ? (
+          <UrunlerPanel onNewUrun={() => {}} />
         ) : (
           <>
             <div className="mb-4">

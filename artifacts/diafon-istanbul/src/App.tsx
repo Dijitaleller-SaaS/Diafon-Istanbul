@@ -7,6 +7,7 @@ import Home from "@/pages/Home";
 import Products from "@/pages/Products";
 import Blog from "@/pages/Blog";
 import BlogAdmin from "@/pages/BlogAdmin";
+import UrunDetay from "@/pages/UrunDetay";
 import Hakkimizda from "@/pages/Hakkimizda";
 import BolgeDetay from "@/pages/BolgeDetay";
 import GoruntulDiafon from "@/pages/GoruntulDiafon";
@@ -25,6 +26,7 @@ function Router() {
       <Switch>
         <Route path="/" component={Home} />
         <Route path="/urunler" component={Products} />
+        <Route path="/urunler/:slug" component={UrunDetay} />
         <Route path="/hakkimizda" component={Hakkimizda} />
         <Route path="/goruntulu-diafon" component={GoruntulDiafon} />
         <Route path="/goruntulu-diafon-fiyatlari" component={GoruntulDiafonFiyatlari} />

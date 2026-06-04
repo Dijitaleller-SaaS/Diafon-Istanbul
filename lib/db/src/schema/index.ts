@@ -19,3 +19,4 @@
 
 export * from "./leads";
 export * from "./site_content";
+export * from "./products";
