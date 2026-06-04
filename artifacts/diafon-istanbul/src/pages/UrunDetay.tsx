@@ -112,6 +112,45 @@ export default function UrunDetay() {
     };
   }, [product]);
 
+  useEffect(() => {
+    if (!product) return;
+
+    const images = parseJson<string[]>(product.images, []);
+    const schema = {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      name: product.name,
+      description: product.short_desc || product.name,
+      brand: {
+        "@type": "Brand",
+        name: product.brand,
+      },
+      ...(images[0] ? { image: images } : {}),
+      ...(product.rating
+        ? {
+            aggregateRating: {
+              "@type": "AggregateRating",
+              ratingValue: product.rating,
+              bestRating: 5,
+              worstRating: 1,
+              reviewCount: 1,
+            },
+          }
+        : {}),
+    };
+
+    const script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.id = "product-schema-ld-json";
+    script.textContent = JSON.stringify(schema);
+    document.head.appendChild(script);
+
+    return () => {
+      const el = document.getElementById("product-schema-ld-json");
+      if (el) el.remove();
+    };
+  }, [product]);
+
   if (loading) {
     return (
       <div className="flex flex-col min-h-screen bg-background">
