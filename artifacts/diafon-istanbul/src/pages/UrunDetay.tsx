@@ -50,6 +50,21 @@ function parseJson<T>(s: string, fallback: T): T {
   catch { return fallback; }
 }
 
+function setMeta(name: string, content: string) {
+  let el = document.querySelector<HTMLMetaElement>(`meta[name="${name}"]`);
+  if (!el) { el = document.createElement("meta"); el.setAttribute("name", name); document.head.appendChild(el); }
+  el.setAttribute("content", content);
+}
+
+function setOgMeta(property: string, content: string) {
+  let el = document.querySelector<HTMLMetaElement>(`meta[property="${property}"]`);
+  if (!el) { el = document.createElement("meta"); el.setAttribute("property", property); document.head.appendChild(el); }
+  el.setAttribute("content", content);
+}
+
+const DEFAULT_TITLE = "İstanbul Diafon Montaj & Servis | 7/24 Görüntülü Diafon";
+const DEFAULT_DESC = "İstanbul tüm ilçelerde görüntülü ve sesli diafon montajı, arıza ve servis. 7/24 hizmet, ücretsiz keşif. 0532 061 57 58";
+
 export default function UrunDetay() {
   const { slug } = useParams<{ slug: string }>();
   const { content } = useSiteContent();
@@ -73,6 +88,29 @@ export default function UrunDetay() {
       .catch(() => setNotFound(true))
       .finally(() => setLoading(false));
   }, [slug]);
+
+  useEffect(() => {
+    if (!product) return;
+    const categoryLabel = CATEGORY_LABELS[product.category] ?? product.category;
+    const title = `${product.name} | ${categoryLabel} — Diafon İstanbul`;
+    const desc = product.short_desc
+      ? `${product.short_desc} İstanbul'da profesyonel montaj ve servis hizmeti.`
+      : `${product.name} — İstanbul'da profesyonel diafon montaj ve servis hizmeti. Ücretsiz keşif.`;
+
+    document.title = title;
+    setMeta("description", desc);
+    setOgMeta("og:title", title);
+    setOgMeta("og:description", desc);
+    setOgMeta("og:type", "product");
+
+    return () => {
+      document.title = DEFAULT_TITLE;
+      setMeta("description", DEFAULT_DESC);
+      setOgMeta("og:title", DEFAULT_TITLE);
+      setOgMeta("og:description", DEFAULT_DESC);
+      setOgMeta("og:type", "website");
+    };
+  }, [product]);
 
   if (loading) {
     return (

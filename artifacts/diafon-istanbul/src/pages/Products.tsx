@@ -61,6 +61,18 @@ const ProductSkeleton = () => (
   </div>
 );
 
+function setMeta(name: string, content: string) {
+  let el = document.querySelector<HTMLMetaElement>(`meta[name="${name}"]`);
+  if (!el) { el = document.createElement("meta"); el.setAttribute("name", name); document.head.appendChild(el); }
+  el.setAttribute("content", content);
+}
+
+function setOgMeta(property: string, content: string) {
+  let el = document.querySelector<HTMLMetaElement>(`meta[property="${property}"]`);
+  if (!el) { el = document.createElement("meta"); el.setAttribute("property", property); document.head.appendChild(el); }
+  el.setAttribute("content", content);
+}
+
 export default function Products() {
   const { content } = useSiteContent();
   const [activeCategory, setActiveCategory] = useState("goruntulu");
@@ -76,6 +88,17 @@ export default function Products() {
       .then((data) => setProducts(Array.isArray(data) ? data : []))
       .catch(() => setProducts([]))
       .finally(() => setLoading(false));
+  }, [activeCategory]);
+
+  useEffect(() => {
+    const cat = CATEGORIES.find((c) => c.id === activeCategory);
+    if (!cat) return;
+    const title = `${cat.label} | Diafon İstanbul`;
+    const desc = `${cat.description} İstanbul'da profesyonel montaj ve servis. Ücretsiz keşif, 7/24 hizmet. 0532 061 57 58`;
+    document.title = title;
+    setMeta("description", desc);
+    setOgMeta("og:title", title);
+    setOgMeta("og:description", desc);
   }, [activeCategory]);
 
   const openQuote = (productName: string) => {
