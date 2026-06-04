@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useSiteContent } from "@/hooks/useSiteContent";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import {
   Phone,
@@ -298,6 +299,7 @@ const Counter = ({
 };
 
 export default function Home() {
+  const { content } = useSiteContent();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -425,16 +427,14 @@ export default function Home() {
 
                 <FadeIn delay={0.1}>
                   <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground mb-6 leading-[1.1]">
-                    İstanbul Diafon Montaj{" "}
-                    <span className="text-primary">ve Servis</span> Uzmanı
+                    {content.hero_title_main}{" "}
+                    <span className="text-primary">{content.hero_title_accent}</span> {content.hero_title_suffix}
                   </h1>
                 </FadeIn>
 
                 <FadeIn delay={0.2}>
                   <p className="text-base md:text-lg text-muted-foreground mb-8 max-w-lg leading-relaxed">
-                    Görüntülü diafon sistemleri, tesisat keşfi ve kablo
-                    yenileme projelerinde 10 yıllık deneyimimizle kalıcı ve
-                    garantili çözümler sunuyoruz.
+                    {content.hero_subtitle}
                   </p>
                 </FadeIn>
 
@@ -767,18 +767,6 @@ export default function Home() {
                   color: "text-amber-600 bg-amber-500/10",
                 },
                 {
-                  icon: HomeIcon,
-                  title: "Akıllı Ev Entegrasyonu",
-                  desc: "Telefonunuzdan kapıyı açın. Wi-Fi destekli akıllı kapı zili ve diafon sistemleri.",
-                  color: "text-violet-600 bg-violet-500/10",
-                },
-                {
-                  icon: Cpu,
-                  title: "IP & Network Sistemler",
-                  desc: "IP tabanlı diafon sistemleri ile binanızı dijital altyapıya taşıyın. Uzaktan yönetim desteği.",
-                  color: "text-sky-600 bg-sky-500/10",
-                },
-                {
                   icon: ShieldCheck,
                   title: "Yedek Parça & Aksesuar",
                   desc: "Tüm marka ve modellere uyumlu orijinal ve muadil yedek parça. Uzman danışmanlık ile doğru seçim.",
@@ -864,34 +852,6 @@ export default function Home() {
               </FadeIn>
 
               <FadeIn delay={0.3} className="md:col-span-1 md:row-span-1">
-                <div className="bg-card border border-border h-full rounded-3xl p-6 flex flex-col group hover:border-primary/50 transition-colors shadow-sm">
-                  <div className="w-10 h-10 bg-amber-500/10 rounded-lg flex items-center justify-center mb-4 text-amber-600">
-                    <Wrench className="w-5 h-5" />
-                  </div>
-                  <h3 className="text-xl font-bold mb-2">Arıza & Servis</h3>
-                  <p className="text-sm text-muted-foreground mt-auto">
-                    7/24 acil müdahale, panel ve şube tamiri.
-                  </p>
-                </div>
-              </FadeIn>
-
-              <FadeIn delay={0.4} className="md:col-span-1 md:row-span-1">
-                <div className="bg-card border border-border h-full rounded-3xl p-6 flex flex-col group hover:border-primary/50 transition-colors shadow-sm relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-bl-full -z-0"></div>
-                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center mb-4 text-primary z-10">
-                    <HomeIcon className="w-5 h-5" />
-                  </div>
-                  <h3 className="text-xl font-bold mb-2 z-10">
-                    Akıllı Ev Entegrasyonu
-                  </h3>
-                  <p className="text-sm text-muted-foreground mt-auto z-10">
-                    Diafon sisteminizi akıllı telefonunuzdan yönetin. Uzaktan
-                    kapı açma ve izleme özellikleri.
-                  </p>
-                </div>
-              </FadeIn>
-
-              <FadeIn delay={0.5} className="md:col-span-1 md:row-span-1">
                 <div className="bg-card border border-border h-full rounded-3xl p-6 flex flex-col group hover:border-primary/50 transition-colors shadow-sm">
                   <div className="w-10 h-10 bg-indigo-500/10 rounded-lg flex items-center justify-center mb-4 text-indigo-600">
                     <Settings className="w-5 h-5" />
@@ -1172,10 +1132,10 @@ export default function Home() {
                   Diafon İstanbul Hakkında
                 </h2>
                 <p className="text-muted-foreground leading-relaxed mb-6 max-w-xl">
-                  10 yılı aşkın deneyimimizle İstanbul'un 39 ilçesinde diafon montajı, kablo yenileme ve 7/24 arıza servisi sunuyoruz. "Kaliteye Güven" prensibimizle yüzlerce konut ve ticari projeye imza attık.
+                  {content.about_text}
                 </p>
                 <div className="flex flex-wrap gap-3 mb-8">
-                  {[["500+", "Başarılı Montaj"], ["10+", "Yıl Deneyim"], ["39", "İlçe"], ["7/24", "Servis"]].map(([val, label]) => (
+                  {content.stats.map(({ val, label }) => (
                     <div key={label} className="text-center bg-background border border-border rounded-xl px-5 py-3 min-w-[90px]">
                       <div className="text-xl font-bold text-primary">{val}</div>
                       <div className="text-xs text-muted-foreground mt-0.5">{label}</div>
