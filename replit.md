@@ -36,6 +36,25 @@ _Describe the high-level user-facing capabilities of this app once they exist._
 
 _Populate as you build — explicit user instructions worth remembering across sessions._
 
+## SEO & Search Console
+
+### Sitemap
+- Dynamic sitemap lives at `https://diafonistanbul.com/sitemap.xml` (route: `artifacts/api-server/src/routes/sitemap.ts`)
+- `artifacts/diafon-istanbul/public/robots.txt` references the sitemap URL
+- Sitemap auto-updates when products or blog posts are added
+
+### Google Search Console — sitemap submission (pending manual step)
+The sitemap must be submitted once manually in Google Search Console:
+1. Go to https://search.google.com/search-console
+2. Select the **diafonistanbul.com** property (verify domain ownership first if not done — DNS TXT record method recommended)
+3. Click **Sitemaps** in the left sidebar
+4. Enter `sitemap.xml` and click **Submit**
+5. Confirm status shows **Success** with 0 errors under Coverage
+
+After submission, update this section with the submission date and coverage status.
+
+**Status:** ⏳ Pending manual submission (as of 2026-06-04)
+
 ## Gotchas
 
 _Populate as you build — sharp edges, "always run X before Y" rules._
