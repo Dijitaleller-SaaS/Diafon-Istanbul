@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, createContext, type ReactNode } from "react";
+import { useState, useEffect, useContext, createContext, useCallback, type ReactNode } from "react";
 import { createElement } from "react";
 
 export interface SiteStat {
@@ -39,30 +39,41 @@ export const DEFAULTS: SiteContent = {
     "10 yılı aşkın deneyimimizle İstanbul'un 39 ilçesinde diafon montajı, kablo yenileme ve 7/24 arıza servisi sunuyoruz. \"Kaliteye Güven\" prensibimizle yüzlerce konut ve ticari projeye imza attık.",
 };
 
-type ContextValue = { content: SiteContent; loading: boolean };
+type ContextValue = {
+  content: SiteContent;
+  loading: boolean;
+  refresh: () => Promise<void>;
+};
 
 const SiteContentContext = createContext<ContextValue>({
   content: DEFAULTS,
   loading: true,
+  refresh: async () => {},
 });
 
 export function SiteContentProvider({ children }: { children: ReactNode }) {
   const [content, setContent] = useState<SiteContent>(DEFAULTS);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetch("/api/content")
-      .then((r) => r.json())
-      .then((data) => {
-        setContent({ ...DEFAULTS, ...data });
-      })
-      .catch(() => {})
-      .finally(() => setLoading(false));
+  const refresh = useCallback(async () => {
+    try {
+      const res = await fetch("/api/content");
+      const data = await res.json();
+      setContent({ ...DEFAULTS, ...data });
+    } catch {
+      // silently ignore
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    refresh();
+  }, [refresh]);
 
   return createElement(
     SiteContentContext.Provider,
-    { value: { content, loading } },
+    { value: { content, loading, refresh } },
     children
   );
 }

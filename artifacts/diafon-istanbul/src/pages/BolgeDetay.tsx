@@ -1,5 +1,6 @@
 import { useParams, Link } from "wouter";
 import { useEffect } from "react";
+import { useSiteContent } from "@/hooks/useSiteContent";
 import NotFound from "@/pages/not-found";
 import { motion } from "framer-motion";
 import {
@@ -196,6 +197,7 @@ const FadeIn = ({
 );
 
 const BolgeDetay = () => {
+  const { content } = useSiteContent();
   const params = useParams<{ slug: string }>();
   const slug = params.slug ?? "";
   const SUFFIX = "-diafon-kurulumu";
@@ -244,7 +246,7 @@ const BolgeDetay = () => {
                   <ArrowRight className="w-4 h-4" />
                 </Button>
               </Link>
-              <a href="tel:+905320000000">
+              <a href={`tel:+${content.whatsapp_number}`}>
                 <Button variant="outline" size="lg" className="gap-2 rounded-xl px-7 h-13 text-base">
                   <Phone className="w-4 h-4" />
                   Hemen Ara

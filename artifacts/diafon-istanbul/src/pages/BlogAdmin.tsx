@@ -251,7 +251,7 @@ function PostEditor({
 }
 
 function HomepageEditor() {
-  const { content, loading } = useSiteContent();
+  const { content, loading, refresh } = useSiteContent();
   const [form, setForm] = useState<SiteContent>(content);
   const [saving, setSaving] = useState<string | null>(null);
 
@@ -263,8 +263,12 @@ function HomepageEditor() {
     setSaving(key);
     const result = await saveSiteContent(key, value, ADMIN_PASSWORD);
     setSaving(null);
-    if (result.ok) toast.success("Kaydedildi.");
-    else toast.error(result.error ?? "Kayıt hatası.");
+    if (result.ok) {
+      toast.success("Kaydedildi.");
+      await refresh();
+    } else {
+      toast.error(result.error ?? "Kayıt hatası.");
+    }
   };
 
   const setField = (key: keyof SiteContent, value: string) =>
@@ -379,14 +383,14 @@ interface Lead {
   id: number;
   name: string;
   phone: string;
-  product?: string | null;
-  message?: string | null;
+  district: string;
+  message: string;
   status: "new" | "contacted" | "closed";
   createdAt: string;
 }
 
 function AyarlarEditor() {
-  const { content, loading } = useSiteContent();
+  const { content, loading, refresh } = useSiteContent();
   const [form, setForm] = useState({ phone_display: "", whatsapp_number: "", contact_email: "" });
   const [saving, setSaving] = useState<string | null>(null);
 
@@ -404,8 +408,12 @@ function AyarlarEditor() {
     setSaving(key);
     const result = await saveSiteContent(key, form[key], ADMIN_PASSWORD);
     setSaving(null);
-    if (result.ok) toast.success("Kaydedildi.");
-    else toast.error(result.error ?? "Kayıt hatası.");
+    if (result.ok) {
+      toast.success("Kaydedildi.");
+      await refresh();
+    } else {
+      toast.error(result.error ?? "Kayıt hatası.");
+    }
   };
 
   if (loading) return <div className="py-16 text-center text-muted-foreground text-sm">Yükleniyor…</div>;
@@ -465,6 +473,31 @@ function AyarlarEditor() {
             </Button>
           </div>
         </div>
+      </div>
+
+      {/* Bildirim Kurulumu */}
+      <div className="bg-card border border-border rounded-2xl p-6 space-y-4">
+        <h3 className="font-semibold text-foreground flex items-center gap-2">
+          <Mail className="w-4 h-4 text-primary" /> Bildirim Kurulumu
+        </h3>
+        <p className="text-sm text-muted-foreground">Yeni form talebi geldiğinde otomatik e-posta almak için aşağıdaki ortam değişkenlerini Replit Secrets'a ekleyin.</p>
+
+        <div className="rounded-xl bg-muted/60 border border-border p-4 space-y-3 text-sm font-mono">
+          <div className="space-y-1">
+            <p className="font-semibold text-foreground not-italic text-xs uppercase tracking-wider">Resend (E-posta)</p>
+            <p><span className="text-primary">RESEND_API_KEY</span> — Resend.com hesabınızdan API anahtarı</p>
+            <p><span className="text-primary">RESEND_FROM_EMAIL</span> — Gönderici adres (ör. noreply@resend.dev)</p>
+            <p><span className="text-primary">RESEND_NOTIFY_EMAIL</span> — Bildirimlerin gönderileceği admin e-postası</p>
+          </div>
+          <div className="space-y-1 pt-2 border-t border-border">
+            <p className="font-semibold text-foreground not-italic text-xs uppercase tracking-wider">Twilio (WhatsApp)</p>
+            <p><span className="text-primary">TWILIO_ACCOUNT_SID</span> — Twilio hesap SID</p>
+            <p><span className="text-primary">TWILIO_AUTH_TOKEN</span> — Twilio auth token</p>
+            <p><span className="text-primary">TWILIO_WHATSAPP_FROM</span> — Twilio numarası (ör. whatsapp:+14155238886)</p>
+            <p><span className="text-primary">TWILIO_WHATSAPP_TO</span> — Mesajın gideceği WhatsApp numarası (ör. whatsapp:+90532...)</p>
+          </div>
+        </div>
+        <p className="text-xs text-muted-foreground">Bu değişkenler tanımlı değilse bildirimler sessizce atlanır, site çalışmaya devam eder.</p>
       </div>
     </div>
   );
@@ -557,8 +590,8 @@ function TaleplerPanel() {
                 <div className="flex items-center gap-2 flex-wrap">
                   <span className="font-semibold text-foreground">{lead.name}</span>
                   <Badge className={`text-xs ${STATUS_COLORS[lead.status]}`}>{STATUS_LABELS[lead.status]}</Badge>
-                  {lead.product && (
-                    <span className="text-xs bg-muted px-2 py-0.5 rounded-full text-muted-foreground">{lead.product}</span>
+                  {lead.district && (
+                    <span className="text-xs bg-muted px-2 py-0.5 rounded-full text-muted-foreground">{lead.district}</span>
                   )}
                 </div>
                 <a href={`tel:${lead.phone}`} className="text-sm text-primary font-medium flex items-center gap-1 hover:underline">
