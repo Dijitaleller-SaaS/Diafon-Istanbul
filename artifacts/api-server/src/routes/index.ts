@@ -4,6 +4,7 @@ import leadRouter from "./lead";
 import contentRouter from "./content";
 import leadsRouter from "./leads";
 import productsRouter from "./products";
+import storageRouter from "./storage";
 
 const router: IRouter = Router();
 
@@ -12,5 +13,6 @@ router.use(leadRouter);
 router.use(contentRouter);
 router.use(leadsRouter);
 router.use(productsRouter);
+router.use(storageRouter);
 
 export default router;

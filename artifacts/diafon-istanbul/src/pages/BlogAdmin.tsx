@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "wouter";
-import { PlusCircle, Pencil, Trash2, Eye, EyeOff, LogOut, ArrowLeft, Save, X, Layout, FileText, Settings, MessageSquare, Phone, Mail, CheckCircle2, Clock, RefreshCw, Package, Star, Tag } from "lucide-react";
+import { PlusCircle, Pencil, Trash2, Eye, EyeOff, LogOut, ArrowLeft, Save, X, Layout, FileText, Settings, MessageSquare, Phone, Mail, CheckCircle2, Clock, RefreshCw, Package, Star, Tag, Upload } from "lucide-react";
+import { useUpload } from "@workspace/object-storage-web";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -709,6 +710,21 @@ function UrunForm({ product, onSave, onCancel }: {
 }) {
   const [form, setForm] = useState<UrunFormData>(product ? urunToForm(product) : EMPTY_URUN);
   const [saving, setSaving] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const { uploadFile, isUploading } = useUpload({
+    onSuccess: (response) => {
+      const url = `/api/storage${response.objectPath}`;
+      setForm((p) => ({
+        ...p,
+        imagesText: p.imagesText.trim() ? `${p.imagesText.trim()}\n${url}` : url,
+      }));
+      toast.success("Görsel yüklendi.");
+    },
+    onError: () => {
+      toast.error("Görsel yüklenemedi.");
+    },
+  });
 
   const set = <K extends keyof UrunFormData>(k: K, v: UrunFormData[K]) =>
     setForm((p) => ({ ...p, [k]: v }));
@@ -796,7 +812,33 @@ function UrunForm({ product, onSave, onCancel }: {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1">Görsel URL'leri (her satıra bir URL)</label>
+            <div className="flex items-center justify-between mb-1">
+              <label className="block text-sm font-medium text-foreground">Görsel URL'leri (her satıra bir URL)</label>
+              <Button
+                type="button"
+                size="sm"
+                variant="outline"
+                disabled={isUploading}
+                onClick={() => fileInputRef.current?.click()}
+                className="flex items-center gap-1.5 text-xs h-7"
+              >
+                <Upload className="w-3.5 h-3.5" />
+                {isUploading ? "Yükleniyor…" : "Dosya Yükle"}
+              </Button>
+            </div>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={async (e) => {
+                const file = e.target.files?.[0];
+                if (file) {
+                  await uploadFile(file);
+                  e.target.value = "";
+                }
+              }}
+            />
             <Textarea value={form.imagesText} onChange={(e) => set("imagesText", e.target.value)} placeholder={"https://example.com/img1.jpg\nhttps://example.com/img2.jpg"} rows={3} className="font-mono text-sm" />
           </div>
 
