@@ -58,6 +58,7 @@ import { cn } from "@/lib/utils";
 import { Link } from "wouter";
 import { getBlogPosts } from "@/pages/Blog";
 import ServiceAreas from "@/components/ServiceAreas";
+import Footer from "@/components/Footer";
 import { BookOpen, Cpu } from "lucide-react";
 
 const formSchema = z.object({
@@ -1125,35 +1126,42 @@ export default function Home() {
         </section>
 
         {/* ── Hakkımızda Teaser ── */}
-        <section id="hakkimizda" className="py-20 bg-muted/30">
+        <section id="hakkimizda" className="py-24 bg-muted/30 scroll-mt-20">
           <div className="container mx-auto px-4 md:px-6">
-            <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-10 md:gap-16">
-              <FadeIn className="flex-1">
-                <div className="inline-flex items-center gap-2 text-xs font-semibold tracking-widest uppercase text-primary mb-3">
-                  <span className="w-8 h-px bg-primary"></span>
+            <FadeIn>
+              <div className="text-center max-w-2xl mx-auto mb-10">
+                <div className="inline-flex items-center gap-3 text-xs font-semibold tracking-widest uppercase text-primary mb-5">
+                  <span className="w-10 h-px bg-primary/60"></span>
                   Kurumsal
+                  <span className="w-10 h-px bg-primary/60"></span>
                 </div>
-                <h2 className="text-3xl md:text-4xl font-display font-bold mb-4">
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold mb-5">
                   Diafon İstanbul Hakkında
                 </h2>
-                <p className="text-muted-foreground leading-relaxed mb-6 max-w-xl">
+                <p className="text-muted-foreground text-lg leading-relaxed">
                   {content.about_text}
                 </p>
-                <div className="flex flex-wrap gap-3 mb-8">
-                  {content.stats.map(({ val, label }) => (
-                    <div key={label} className="text-center bg-background border border-border rounded-xl px-5 py-3 min-w-[90px]">
-                      <div className="text-xl font-bold text-primary">{val}</div>
-                      <div className="text-xs text-muted-foreground mt-0.5">{label}</div>
-                    </div>
-                  ))}
-                </div>
-                <Link href="/hakkimizda">
-                  <Button variant="outline" className="gap-2">
-                    Devamını Gör <ChevronRight className="w-4 h-4" />
-                  </Button>
-                </Link>
-              </FadeIn>
-            </div>
+              </div>
+            </FadeIn>
+
+            <FadeIn delay={0.1}>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto mb-10">
+                {content.stats.map(({ val, label }) => (
+                  <div key={label} className="text-center bg-background border border-border rounded-2xl px-4 py-6 shadow-sm hover:shadow-md hover:border-primary/30 transition-all">
+                    <div className="text-2xl md:text-3xl font-bold text-primary mb-1">{val}</div>
+                    <div className="text-xs text-muted-foreground font-medium">{label}</div>
+                  </div>
+                ))}
+              </div>
+            </FadeIn>
+
+            <FadeIn delay={0.15} className="flex justify-center">
+              <Link href="/hakkimizda">
+                <Button variant="outline" className="gap-2 rounded-full px-6">
+                  Devamını Gör <ChevronRight className="w-4 h-4" />
+                </Button>
+              </Link>
+            </FadeIn>
           </div>
         </section>
 
@@ -1369,114 +1377,7 @@ export default function Home() {
         </section>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-secondary text-secondary-foreground py-12 md:py-16 border-t border-secondary-foreground/10">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="grid md:grid-cols-4 gap-8 md:gap-12">
-            <div className="md:col-span-2">
-              <div className="flex items-center gap-2 mb-6">
-                <div className="bg-primary text-primary-foreground w-8 h-8 rounded-md flex items-center justify-center font-bold text-sm">
-                  D
-                </div>
-                <span className="font-display font-bold text-2xl tracking-tight text-white">
-                  Diafon İstanbul
-                </span>
-              </div>
-              <p className="text-secondary-foreground/70 mb-6 max-w-sm">
-                İstanbul geneli 39 ilçede uzman kadromuzla görüntülü ve sesli
-                diafon montajı, kablo yenileme ve 7/24 arıza servis hizmeti
-                sunuyoruz.
-              </p>
-            </div>
-
-            <div>
-              <h4 className="font-bold text-lg mb-4 text-white">İletişim</h4>
-              <ul className="space-y-4">
-                <li>
-                  <a
-                    href={`tel:+${content.whatsapp_number}`}
-                    className="flex items-center gap-3 text-secondary-foreground/80 hover:text-white transition-colors group"
-                    data-testid="footer-phone"
-                  >
-                    <div className="w-8 h-8 rounded-full bg-secondary-foreground/10 flex items-center justify-center group-hover:bg-primary/20 group-hover:text-primary transition-colors">
-                      <Phone className="w-4 h-4" />
-                    </div>
-                    <span className="font-medium text-lg">{content.phone_display}</span>
-                  </a>
-                </li>
-                <li className="flex items-center gap-3 text-secondary-foreground/80">
-                  <div className="w-8 h-8 rounded-full bg-secondary-foreground/10 flex items-center justify-center shrink-0">
-                    <Clock className="w-4 h-4" />
-                  </div>
-                  <span>7 Gün 24 Saat Açık</span>
-                </li>
-                <li className="flex items-center gap-3 text-secondary-foreground/80">
-                  <div className="w-8 h-8 rounded-full bg-secondary-foreground/10 flex items-center justify-center shrink-0">
-                    <MapPin className="w-4 h-4" />
-                  </div>
-                  <span>İstanbul Tüm İlçeler</span>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-bold text-lg mb-4 text-white">Hızlı Menü</h4>
-              <ul className="space-y-2">
-                <li>
-                  <button
-                    onClick={() => scrollTo("hizmetler")}
-                    className="text-secondary-foreground/80 hover:text-white transition-colors"
-                  >
-                    Hizmetlerimiz
-                  </button>
-                </li>
-                <li>
-                  <button
-                    onClick={() => scrollTo("urunler-onizleme")}
-                    className="text-secondary-foreground/80 hover:text-white transition-colors"
-                  >
-                    Ürünlerimiz
-                  </button>
-                </li>
-                <li>
-                  <Link href="/blog" className="text-secondary-foreground/80 hover:text-white transition-colors">
-                    Blog
-                  </Link>
-                </li>
-                <li>
-                  <button
-                    onClick={() => scrollTo("hakkimizda")}
-                    className="text-secondary-foreground/80 hover:text-white transition-colors"
-                  >
-                    Hakkımızda
-                  </button>
-                </li>
-                <li>
-                  <button
-                    onClick={() => scrollTo("sss")}
-                    className="text-secondary-foreground/80 hover:text-white transition-colors"
-                  >
-                    Sıkça Sorulan Sorular
-                  </button>
-                </li>
-                <li>
-                  <button
-                    onClick={() => scrollTo("iletisim")}
-                    className="text-secondary-foreground/80 hover:text-white transition-colors"
-                  >
-                    Keşif Talep Et
-                  </button>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="mt-12 pt-8 border-t border-secondary-foreground/10 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-secondary-foreground/60">
-            <p>&copy; {new Date().getFullYear()} Diafon İstanbul. Tüm hakları saklıdır.</p>
-            <p>İstanbul'un Güvenliği Bize Emanet.</p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

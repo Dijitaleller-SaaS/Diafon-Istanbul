@@ -114,7 +114,7 @@ export default function Navbar() {
               className="rounded-md flex items-center gap-2"
             >
               <Phone className="w-3.5 h-3.5" />
-              Servis Çağır
+              Ücretsiz Keşif Al
             </Button>
           </div>
 

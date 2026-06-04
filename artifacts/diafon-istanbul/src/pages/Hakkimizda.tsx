@@ -1,4 +1,5 @@
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { motion, useInView } from "framer-motion";
@@ -222,29 +223,7 @@ export default function Hakkimizda() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-secondary text-secondary-foreground py-8 mt-auto border-t border-secondary-foreground/10">
-        <div className="container mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <div className="bg-primary text-primary-foreground w-7 h-7 rounded-md flex items-center justify-center font-bold text-xs">
-              D
-            </div>
-            <span className="font-bold text-white">Diafon İstanbul</span>
-          </div>
-          <div className="flex items-center gap-4 text-secondary-foreground/70 text-sm">
-            <a href={`tel:+${content.whatsapp_number}`} className="hover:text-white transition-colors flex items-center gap-1.5">
-              <Phone className="w-3.5 h-3.5" /> {content.phone_display}
-            </a>
-            <span>·</span>
-            <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" /> 7/24</span>
-            <span>·</span>
-            <span className="flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5" /> Beşiktaş, İstanbul</span>
-          </div>
-          <Link href="/" className="text-secondary-foreground/70 hover:text-white transition-colors text-sm">
-            ← Ana Sayfaya Dön
-          </Link>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

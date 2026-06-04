@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import { cn } from "@/lib/utils";
 import { useSiteContent } from "@/hooks/useSiteContent";
 
@@ -354,11 +355,7 @@ function BlogList() {
         </div>
       </main>
 
-      <footer className="bg-secondary text-secondary-foreground py-8">
-        <div className="container mx-auto px-4 md:px-6 text-center text-sm text-secondary-foreground/60">
-          <p>&copy; {new Date().getFullYear()} Diafon İstanbul. Tüm hakları saklıdır.</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

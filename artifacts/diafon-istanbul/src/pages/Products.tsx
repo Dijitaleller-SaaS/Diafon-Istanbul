@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Footer from "@/components/Footer";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Phone,
@@ -290,20 +291,7 @@ export default function Products() {
         </div>
       </main>
 
-      <footer className="bg-secondary text-secondary-foreground py-10 border-t border-secondary-foreground/10 mt-16">
-        <div className="container mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <div className="bg-primary text-primary-foreground w-8 h-8 rounded-md flex items-center justify-center font-bold text-sm">D</div>
-            <span className="font-bold text-white">Diafon İstanbul</span>
-          </div>
-          <p className="text-secondary-foreground/60 text-sm">
-            &copy; {new Date().getFullYear()} Diafon İstanbul — İstanbul'un Güvenliği Bize Emanet.
-          </p>
-          <a href={`tel:+${content.whatsapp_number}`} className="text-secondary-foreground/80 hover:text-white font-semibold transition-colors flex items-center gap-2">
-            <Phone className="w-4 h-4" /> {content.phone_display}
-          </a>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

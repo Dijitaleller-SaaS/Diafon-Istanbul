@@ -1,4 +1,5 @@
 import { useParams, Link } from "wouter";
+import Footer from "@/components/Footer";
 import { useEffect } from "react";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import NotFound from "@/pages/not-found";
@@ -352,15 +353,7 @@ const BolgeDetay = () => {
         </div>
       </section>
 
-      {/* Footer placeholder */}
-      <footer className="py-6 border-t border-border bg-muted/30">
-        <div className="container mx-auto px-4 md:px-6 flex items-center justify-between flex-wrap gap-3 text-sm text-muted-foreground">
-          <span>© {new Date().getFullYear()} Diafon İstanbul. Tüm hakları saklıdır.</span>
-          <Link href="/" className="hover:text-primary transition-colors">
-            Ana Sayfaya Dön
-          </Link>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };

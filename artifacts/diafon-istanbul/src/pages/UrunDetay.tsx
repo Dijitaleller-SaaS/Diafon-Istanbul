@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import QuoteModal from "@/components/QuoteModal";
 import { useSiteContent } from "@/hooks/useSiteContent";
 
@@ -384,17 +385,7 @@ export default function UrunDetay() {
         </div>
       </main>
 
-      <footer className="bg-secondary text-secondary-foreground py-8 border-t border-secondary-foreground/10">
-        <div className="container mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <div className="bg-primary text-primary-foreground w-8 h-8 rounded-md flex items-center justify-center font-bold text-sm">D</div>
-            <span className="font-bold text-white">Diafon İstanbul</span>
-          </div>
-          <a href={`tel:+${content.whatsapp_number}`} className="text-secondary-foreground/80 hover:text-white font-semibold transition-colors flex items-center gap-2">
-            <Phone className="w-4 h-4" /> {content.phone_display}
-          </a>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
