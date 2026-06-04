@@ -8,8 +8,8 @@ import { useSiteContent } from "@/hooks/useSiteContent";
 
 const NAV_ITEMS = [
   { label: "Ana Sayfa", href: "/" },
-  { label: "Ürünler", href: "/urunler" },
-  { label: "Hizmetler", anchor: "hizmetler" },
+  { label: "Ürünler", anchor: "hizmetler" },
+  { label: "Bölgeler", anchor: "hizmet-bolgeleri" },
   { label: "Hakkımızda", anchor: "hakkimizda" },
   { label: "İletişim", anchor: "iletisim" },
 ];

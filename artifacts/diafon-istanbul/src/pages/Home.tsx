@@ -746,7 +746,7 @@ export default function Home() {
           const featured = cards.find((c) => c.featured);
 
           return (
-            <section id="hizmetler" className="py-24 bg-muted/30">
+            <section id="hizmetler" className="py-24 bg-muted/30 scroll-mt-20">
               <div className="container mx-auto px-4 md:px-6">
                 <FadeIn>
                   <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12">
