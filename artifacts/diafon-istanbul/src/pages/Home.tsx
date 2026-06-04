@@ -14,6 +14,9 @@ import {
   Video,
   Home as HomeIcon,
   Users,
+  Monitor,
+  Building2,
+  type LucideIcon,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
@@ -55,7 +58,7 @@ import { cn } from "@/lib/utils";
 import { Link } from "wouter";
 import { getBlogPosts } from "@/pages/Blog";
 import ServiceAreas from "@/components/ServiceAreas";
-import { BookOpen, Monitor, Building2, Cpu } from "lucide-react";
+import { BookOpen, Cpu } from "lucide-react";
 
 const formSchema = z.object({
   fullName: z
@@ -725,149 +728,151 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Products Preview */}
-        <section id="urunler-onizleme" className="py-24 bg-muted/30">
-          <div className="container mx-auto px-4 md:px-6">
-            <FadeIn>
-              <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12">
-                <div>
-                  <span className="text-primary font-semibold text-sm uppercase tracking-widest mb-2 block">Ürünlerimiz</span>
-                  <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground">
-                    Profesyonel Diafon Sistemleri
-                  </h2>
-                  <p className="text-muted-foreground mt-3 max-w-xl">
-                    Konut, ofis ve sitelere özel görüntülü ve sesli diafon çözümlerimizi inceleyin.
-                  </p>
-                </div>
-                <Link href="/urunler">
-                  <Button variant="outline" className="shrink-0 gap-2">
-                    Tüm Ürünleri Gör <ChevronRight className="w-4 h-4" />
-                  </Button>
-                </Link>
-              </div>
-            </FadeIn>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[
-                {
-                  icon: Monitor,
-                  title: "Görüntülü Diafon Sistemleri",
-                  desc: "Yüksek çözünürlüklü ekranlarla kapıyı görerek konuşun. Gece görüşlü kamera seçenekleri mevcut.",
-                  color: "text-primary bg-primary/10",
-                },
-                {
-                  icon: Phone,
-                  title: "Sesli Diafon Sistemleri",
-                  desc: "Ekonomik ve güvenilir sesli iletişim. Tek daire veya çok katlı binalara uygun çözümler.",
-                  color: "text-emerald-600 bg-emerald-500/10",
-                },
-                {
-                  icon: Building2,
-                  title: "Site & Apartman Sistemleri",
-                  desc: "Çok kapılı, çok bloklu binalara özel merkezi yönetim sistemleri. Güvenlik kameraları ile entegre.",
-                  color: "text-amber-600 bg-amber-500/10",
-                },
-                {
-                  icon: ShieldCheck,
-                  title: "Yedek Parça & Aksesuar",
-                  desc: "Tüm marka ve modellere uyumlu orijinal ve muadil yedek parça. Uzman danışmanlık ile doğru seçim.",
-                  color: "text-rose-600 bg-rose-500/10",
-                },
-              ].map(({ icon: Icon, title, desc, color }, i) => (
-                <FadeIn key={title} delay={i * 0.07}>
-                  <Card className="bg-background border-border shadow-sm h-full hover:shadow-md transition-shadow group">
-                    <CardHeader className="pb-3">
-                      <div className={cn("w-11 h-11 rounded-xl flex items-center justify-center mb-3", color)}>
-                        <Icon className="w-5 h-5" />
-                      </div>
-                      <CardTitle className="text-base">{title}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-muted-foreground text-sm">{desc}</p>
-                    </CardContent>
-                  </Card>
-                </FadeIn>
-              ))}
-            </div>
-            <FadeIn delay={0.3}>
-              <div className="mt-10 text-center">
-                <Link href="/urunler">
-                  <Button size="lg" className="gap-2">
-                    Tüm Ürünleri ve Fiyatları Görüntüle <ChevronRight className="w-4 h-4" />
-                  </Button>
-                </Link>
-              </div>
-            </FadeIn>
-          </div>
-        </section>
+        {/* Service Cards — admin editable */}
+        {(() => {
+          const ICON_MAP: Record<string, LucideIcon> = {
+            Monitor, Phone, ShieldCheck, Building2, Video,
+            Settings, Wrench, Users, Clock, MapPin, CheckCircle2,
+          };
+          const COLOR_MAP: Record<string, { icon: string; bg: string }> = {
+            primary: { icon: "text-primary", bg: "bg-primary/10" },
+            emerald: { icon: "text-emerald-600", bg: "bg-emerald-500/10" },
+            rose:    { icon: "text-rose-600",    bg: "bg-rose-500/10" },
+            amber:   { icon: "text-amber-600",   bg: "bg-amber-500/10" },
+            indigo:  { icon: "text-indigo-600",  bg: "bg-indigo-500/10" },
+          };
+          const cards = content.service_cards ?? [];
+          const regular = cards.filter((c) => !c.featured);
+          const featured = cards.find((c) => c.featured);
 
-        {/* Services Bento Grid */}
-        <section id="hizmetler" className="py-24">
-          <div className="container mx-auto px-4 md:px-6">
-            <FadeIn>
-              <div className="text-center max-w-2xl mx-auto mb-16">
-                <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                  Profesyonel Çözümler
-                </h2>
-                <p className="text-muted-foreground text-lg">
-                  İhtiyacınıza uygun teknolojik altyapılar ve anahtar teslim
-                  kurulum hizmetleri.
-                </p>
-              </div>
-            </FadeIn>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-[240px]">
-              <FadeIn delay={0.1} className="md:col-span-2 md:row-span-2">
-                <div className="relative h-full w-full rounded-3xl overflow-hidden group">
-                  <div className="absolute inset-0 bg-secondary"></div>
-                  <div className="absolute inset-0 bg-gradient-to-br from-secondary via-secondary to-primary/20 opacity-80"></div>
-                  <div className="relative z-10 p-8 h-full flex flex-col justify-end">
-                    <div className="w-14 h-14 bg-primary/20 backdrop-blur-md rounded-2xl flex items-center justify-center mb-auto border border-primary/30 text-primary-foreground">
-                      <Video className="w-7 h-7" />
+          return (
+            <section id="hizmetler" className="py-24 bg-muted/30">
+              <div className="container mx-auto px-4 md:px-6">
+                <FadeIn>
+                  <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12">
+                    <div>
+                      <span className="text-primary font-semibold text-sm uppercase tracking-widest mb-2 block">Ürünlerimiz</span>
+                      <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground">
+                        Profesyonel Diafon Sistemleri
+                      </h2>
+                      <p className="text-muted-foreground mt-3 max-w-xl">
+                        Konut, ofis ve sitelere özel görüntülü ve sesli diafon çözümlerimizi inceleyin.
+                      </p>
                     </div>
-                    <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">
-                      Görüntülü Diafon Montajı
-                    </h3>
-                    <p className="text-white/80 max-w-md">
-                      Apartman ve siteler için en son teknoloji yüksek
-                      çözünürlüklü, gece görüşlü ve şifreli geçiş özellikli
-                      sistemler.
-                    </p>
+                    <Link href="/urunler">
+                      <Button variant="outline" className="shrink-0 gap-2">
+                        Tüm Ürünleri Gör <ChevronRight className="w-4 h-4" />
+                      </Button>
+                    </Link>
                   </div>
-                  <div className="absolute right-0 bottom-0 opacity-10 transform translate-x-1/4 translate-y-1/4 group-hover:scale-110 transition-transform duration-700">
-                    <Video className="w-96 h-96 text-white" />
-                  </div>
-                </div>
-              </FadeIn>
+                </FadeIn>
 
-              <FadeIn delay={0.2} className="md:col-span-1 md:row-span-1">
-                <div className="bg-card border border-border h-full rounded-3xl p-6 flex flex-col group hover:border-primary/50 transition-colors shadow-sm">
-                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center mb-4 text-primary">
-                    <Phone className="w-5 h-5" />
-                  </div>
-                  <h3 className="text-xl font-bold mb-2">Sesli Diafon</h3>
-                  <p className="text-sm text-muted-foreground mt-auto">
-                    Ekonomik ve pratik sesli iletişim sistemleri kurulumu.
-                  </p>
-                </div>
-              </FadeIn>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:auto-rows-[220px]">
+                  {/* Regular card 0 */}
+                  {regular[0] && (() => {
+                    const Icon = ICON_MAP[regular[0].icon] ?? Monitor;
+                    const clr = COLOR_MAP[regular[0].color] ?? COLOR_MAP.primary;
+                    return (
+                      <FadeIn delay={0.1}>
+                        <div className="bg-card border border-border h-full rounded-2xl p-6 flex flex-col group hover:border-primary/40 transition-colors shadow-sm">
+                          <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center mb-4", clr.bg, clr.icon)}>
+                            <Icon className="w-5 h-5" />
+                          </div>
+                          <h3 className="text-base font-bold mb-2 text-foreground">{regular[0].title}</h3>
+                          <p className="text-sm text-muted-foreground mt-auto">{regular[0].desc}</p>
+                        </div>
+                      </FadeIn>
+                    );
+                  })()}
 
-              <FadeIn delay={0.3} className="md:col-span-1 md:row-span-1">
-                <div className="bg-card border border-border h-full rounded-3xl p-6 flex flex-col group hover:border-primary/50 transition-colors shadow-sm">
-                  <div className="w-10 h-10 bg-indigo-500/10 rounded-lg flex items-center justify-center mb-4 text-indigo-600">
-                    <Settings className="w-5 h-5" />
-                  </div>
-                  <h3 className="text-xl font-bold mb-2">
-                    Tesisat & Kablo Yenileme
-                  </h3>
-                  <p className="text-sm text-muted-foreground mt-auto">
-                    Eski ve sorunlu kablo altyapısının tespiti ve sıfırdan
-                    çekilmesi.
-                  </p>
+                  {/* Regular card 1 */}
+                  {regular[1] && (() => {
+                    const Icon = ICON_MAP[regular[1].icon] ?? Phone;
+                    const clr = COLOR_MAP[regular[1].color] ?? COLOR_MAP.emerald;
+                    return (
+                      <FadeIn delay={0.15}>
+                        <div className="bg-card border border-border h-full rounded-2xl p-6 flex flex-col group hover:border-primary/40 transition-colors shadow-sm">
+                          <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center mb-4", clr.bg, clr.icon)}>
+                            <Icon className="w-5 h-5" />
+                          </div>
+                          <h3 className="text-base font-bold mb-2 text-foreground">{regular[1].title}</h3>
+                          <p className="text-sm text-muted-foreground mt-auto">{regular[1].desc}</p>
+                        </div>
+                      </FadeIn>
+                    );
+                  })()}
+
+                  {/* Featured card — spans 2 rows on lg */}
+                  {featured && (() => {
+                    const Icon = ICON_MAP[featured.icon] ?? Video;
+                    return (
+                      <FadeIn delay={0.2} className="lg:row-span-2 sm:col-span-2 lg:col-span-1">
+                        <div className="relative h-full w-full min-h-[220px] rounded-2xl overflow-hidden group">
+                          <div className="absolute inset-0 bg-secondary" />
+                          <div className="absolute inset-0 bg-gradient-to-br from-secondary via-secondary to-primary/20 opacity-90" />
+                          <div className="relative z-10 p-8 h-full flex flex-col justify-end">
+                            <div className="w-12 h-12 bg-primary/20 backdrop-blur-md rounded-2xl flex items-center justify-center mb-auto border border-primary/30 text-primary-foreground">
+                              <Icon className="w-6 h-6" />
+                            </div>
+                            <h3 className="text-xl md:text-2xl font-bold text-white mb-2">{featured.title}</h3>
+                            <p className="text-white/80 text-sm">{featured.desc}</p>
+                          </div>
+                          <div className="absolute right-0 bottom-0 opacity-10 transform translate-x-1/4 translate-y-1/4 group-hover:scale-110 transition-transform duration-700">
+                            <Icon className="w-64 h-64 text-white" />
+                          </div>
+                        </div>
+                      </FadeIn>
+                    );
+                  })()}
+
+                  {/* Regular card 2 */}
+                  {regular[2] && (() => {
+                    const Icon = ICON_MAP[regular[2].icon] ?? ShieldCheck;
+                    const clr = COLOR_MAP[regular[2].color] ?? COLOR_MAP.rose;
+                    return (
+                      <FadeIn delay={0.25}>
+                        <div className="bg-card border border-border h-full rounded-2xl p-6 flex flex-col group hover:border-primary/40 transition-colors shadow-sm">
+                          <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center mb-4", clr.bg, clr.icon)}>
+                            <Icon className="w-5 h-5" />
+                          </div>
+                          <h3 className="text-base font-bold mb-2 text-foreground">{regular[2].title}</h3>
+                          <p className="text-sm text-muted-foreground mt-auto">{regular[2].desc}</p>
+                        </div>
+                      </FadeIn>
+                    );
+                  })()}
+
+                  {/* Regular card 3 */}
+                  {regular[3] && (() => {
+                    const Icon = ICON_MAP[regular[3].icon] ?? Building2;
+                    const clr = COLOR_MAP[regular[3].color] ?? COLOR_MAP.amber;
+                    return (
+                      <FadeIn delay={0.3}>
+                        <div className="bg-card border border-border h-full rounded-2xl p-6 flex flex-col group hover:border-primary/40 transition-colors shadow-sm">
+                          <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center mb-4", clr.bg, clr.icon)}>
+                            <Icon className="w-5 h-5" />
+                          </div>
+                          <h3 className="text-base font-bold mb-2 text-foreground">{regular[3].title}</h3>
+                          <p className="text-sm text-muted-foreground mt-auto">{regular[3].desc}</p>
+                        </div>
+                      </FadeIn>
+                    );
+                  })()}
                 </div>
-              </FadeIn>
-            </div>
-          </div>
-        </section>
+
+                <FadeIn delay={0.35}>
+                  <div className="mt-10 text-center">
+                    <Link href="/urunler">
+                      <Button size="lg" className="gap-2">
+                        Tüm Ürünleri ve Fiyatları Görüntüle <ChevronRight className="w-4 h-4" />
+                      </Button>
+                    </Link>
+                  </div>
+                </FadeIn>
+              </div>
+            </section>
+          );
+        })()}
 
         {/* Why Us / Stats */}
         <section

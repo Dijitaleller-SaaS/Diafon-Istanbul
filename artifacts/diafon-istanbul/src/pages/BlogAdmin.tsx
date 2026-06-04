@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { getBlogPosts, saveBlogPosts, type BlogPost } from "./Blog";
-import { useSiteContent, saveSiteContent, type SiteContent, type SiteStat } from "@/hooks/useSiteContent";
+import { useSiteContent, saveSiteContent, type SiteContent, type SiteStat, type ServiceCard, DEFAULT_SERVICE_CARDS } from "@/hooks/useSiteContent";
 
 const ADMIN_PASSWORD = "diafon2024";
 const AUTH_KEY = "diafon_blog_auth";
@@ -251,6 +251,25 @@ function PostEditor({
   );
 }
 
+const ICON_OPTIONS = [
+  { value: "Monitor", label: "🖥 Monitör (Görüntülü)" },
+  { value: "Phone", label: "📞 Telefon (Sesli)" },
+  { value: "ShieldCheck", label: "🛡 Kalkan (Güvenlik)" },
+  { value: "Building2", label: "🏢 Bina (Apartman)" },
+  { value: "Video", label: "📹 Video (Kamera)" },
+  { value: "Settings", label: "⚙️ Ayarlar (Tesisat)" },
+  { value: "Wrench", label: "🔧 Anahtar (Servis)" },
+  { value: "Users", label: "👥 Kullanıcılar" },
+];
+
+const COLOR_OPTIONS = [
+  { value: "primary", label: "Mavi (Ana Renk)" },
+  { value: "emerald", label: "Yeşil" },
+  { value: "rose", label: "Kırmızı" },
+  { value: "amber", label: "Sarı/Turuncu" },
+  { value: "indigo", label: "İndigo" },
+];
+
 function HomepageEditor() {
   const { content, loading, refresh } = useSiteContent();
   const [form, setForm] = useState<SiteContent>(content);
@@ -279,6 +298,14 @@ function HomepageEditor() {
     setForm((prev) => {
       const stats = prev.stats.map((s, idx) => idx === i ? { ...s, [field]: value } : s);
       return { ...prev, stats };
+    });
+
+  const setCard = (i: number, field: keyof ServiceCard, value: string | boolean) =>
+    setForm((prev) => {
+      const service_cards = (prev.service_cards ?? DEFAULT_SERVICE_CARDS).map((c, idx) =>
+        idx === i ? { ...c, [field]: value } : c
+      );
+      return { ...prev, service_cards };
     });
 
   if (loading) {
@@ -374,6 +401,79 @@ function HomepageEditor() {
         <Button size="sm" disabled={saving === "about_text"} onClick={() => save("about_text", form.about_text)}>
           <Save className="w-3.5 h-3.5 mr-1.5" />
           {saving === "about_text" ? "Kaydediliyor…" : "Kaydet"}
+        </Button>
+      </div>
+
+      {/* Hizmet Kartları */}
+      <div className="bg-card border border-border rounded-2xl p-6 space-y-5">
+        <div className="flex items-center justify-between">
+          <h3 className="font-semibold text-foreground flex items-center gap-2">
+            <Layout className="w-4 h-4 text-primary" /> Hizmet Kartları
+          </h3>
+          <span className="text-xs text-muted-foreground">4 küçük kart + 1 öne çıkan (koyu) kart</span>
+        </div>
+        <div className="space-y-4">
+          {(form.service_cards ?? DEFAULT_SERVICE_CARDS).map((card, i) => (
+            <div key={i} className={`rounded-xl border p-4 space-y-3 ${card.featured ? "border-primary/40 bg-primary/5" : "border-border"}`}>
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                  {card.featured ? "⭐ Öne Çıkan (Koyu) Kart" : `Kart ${i + 1}`}
+                </span>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs text-muted-foreground mb-1">Başlık</label>
+                  <Input
+                    value={card.title}
+                    onChange={(e) => setCard(i, "title", e.target.value)}
+                    placeholder="Kart başlığı"
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label className="block text-xs text-muted-foreground mb-1">İkon</label>
+                    <select
+                      value={card.icon}
+                      onChange={(e) => setCard(i, "icon", e.target.value)}
+                      className="w-full rounded-md border border-input bg-background px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                    >
+                      {ICON_OPTIONS.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+                    </select>
+                  </div>
+                  {!card.featured && (
+                    <div>
+                      <label className="block text-xs text-muted-foreground mb-1">Renk</label>
+                      <select
+                        value={card.color}
+                        onChange={(e) => setCard(i, "color", e.target.value)}
+                        className="w-full rounded-md border border-input bg-background px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                      >
+                        {COLOR_OPTIONS.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+                      </select>
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div>
+                <label className="block text-xs text-muted-foreground mb-1">Açıklama</label>
+                <Textarea
+                  rows={2}
+                  value={card.desc}
+                  onChange={(e) => setCard(i, "desc", e.target.value)}
+                  placeholder="Kart açıklaması"
+                  className="text-sm"
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+        <Button
+          size="sm"
+          disabled={saving === "service_cards"}
+          onClick={() => save("service_cards", form.service_cards ?? DEFAULT_SERVICE_CARDS)}
+        >
+          <Save className="w-3.5 h-3.5 mr-1.5" />
+          {saving === "service_cards" ? "Kaydediliyor…" : "Kartları Kaydet"}
         </Button>
       </div>
     </div>

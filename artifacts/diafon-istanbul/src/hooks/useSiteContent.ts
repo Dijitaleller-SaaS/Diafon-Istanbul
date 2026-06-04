@@ -6,6 +6,14 @@ export interface SiteStat {
   label: string;
 }
 
+export interface ServiceCard {
+  icon: string;
+  title: string;
+  desc: string;
+  color: string;
+  featured?: boolean;
+}
+
 export interface SiteContent {
   hero_title_main: string;
   hero_title_accent: string;
@@ -17,7 +25,16 @@ export interface SiteContent {
   contact_email: string;
   stats: SiteStat[];
   about_text: string;
+  service_cards: ServiceCard[];
 }
+
+export const DEFAULT_SERVICE_CARDS: ServiceCard[] = [
+  { icon: "Monitor", title: "Görüntülü Diafon Sistemleri", desc: "Yüksek çözünürlüklü ekranlarla kapıyı görerek konuşun. Gece görüşlü kamera seçenekleri mevcut.", color: "primary" },
+  { icon: "Phone", title: "Sesli Diafon Sistemleri", desc: "Ekonomik ve güvenilir sesli iletişim. Tek daire veya çok katlı binalara uygun çözümler.", color: "emerald" },
+  { icon: "ShieldCheck", title: "Yedek Parça & Aksesuar", desc: "Tüm marka ve modellere uyumlu orijinal ve muadil yedek parça. Uzman danışmanlık ile doğru seçim.", color: "rose" },
+  { icon: "Building2", title: "Site & Apartman Sistemleri", desc: "Çok kapılı, çok bloklu binalara özel merkezi yönetim sistemleri. Güvenlik kameraları ile entegre.", color: "amber" },
+  { icon: "Video", title: "Görüntülü Diafon Montajı", desc: "Apartman ve siteler için en son teknoloji yüksek çözünürlüklü, gece görüşlü ve şifreli geçiş özellikli sistemler.", color: "primary", featured: true },
+];
 
 export const DEFAULTS: SiteContent = {
   hero_title_main: "İstanbul Diafon Montaj",
@@ -37,6 +54,7 @@ export const DEFAULTS: SiteContent = {
   ],
   about_text:
     "10 yılı aşkın deneyimimizle İstanbul'un 39 ilçesinde diafon montajı, kablo yenileme ve 7/24 arıza servisi sunuyoruz. \"Kaliteye Güven\" prensibimizle yüzlerce konut ve ticari projeye imza attık.",
+  service_cards: DEFAULT_SERVICE_CARDS,
 };
 
 type ContextValue = {
