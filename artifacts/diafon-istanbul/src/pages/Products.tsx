@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { Link } from "wouter";
+import { useSiteContent } from "@/hooks/useSiteContent";
 import Navbar from "@/components/Navbar";
 import QuoteModal from "@/components/QuoteModal";
 
@@ -370,6 +371,7 @@ const FadeIn = ({
 );
 
 export default function Products() {
+  const { content } = useSiteContent();
   const [activeCategory, setActiveCategory] = useState("goruntulu");
   const [quoteOpen, setQuoteOpen] = useState(false);
   const [quoteProduct, setQuoteProduct] = useState("");
@@ -447,7 +449,7 @@ export default function Products() {
                   <p className="text-sm font-semibold text-foreground mb-1">Fiyat almak ister misiniz?</p>
                   <p className="text-xs text-muted-foreground mb-3">Uzmanlarımız sizi arasın, ücretsiz keşif yapalım.</p>
                   <Button asChild size="sm" className="w-full rounded-lg">
-                    <a href="tel:+905320615758">
+                    <a href={`tel:+${content.whatsapp_number}`}>
                       <Phone className="w-3.5 h-3.5 mr-2" />
                       Hemen Ara
                     </a>
@@ -562,7 +564,7 @@ export default function Products() {
                                 className="rounded-lg border-border"
                               >
                               <a
-                                href={`https://wa.me/905320615758?text=${encodeURIComponent(`Merhaba, "${product.name}" ürünü hakkında bilgi almak istiyorum.`)}`}
+                                href={`https://wa.me/${content.whatsapp_number}?text=${encodeURIComponent(`Merhaba, "${product.name}" ürünü hakkında bilgi almak istiyorum.`)}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                               >
@@ -600,8 +602,8 @@ export default function Products() {
           <p className="text-secondary-foreground/60 text-sm">
             &copy; {new Date().getFullYear()} Diafon İstanbul — İstanbul'un Güvenliği Bize Emanet.
           </p>
-          <a href="tel:+905320615758" className="text-secondary-foreground/80 hover:text-white font-semibold transition-colors flex items-center gap-2">
-            <Phone className="w-4 h-4" /> 0532 061 57 58
+          <a href={`tel:+${content.whatsapp_number}`} className="text-secondary-foreground/80 hover:text-white font-semibold transition-colors flex items-center gap-2">
+            <Phone className="w-4 h-4" /> {content.phone_display}
           </a>
         </div>
       </footer>

@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext, createContext, type ReactNode } from "react";
+import { createElement } from "react";
 
 export interface SiteStat {
   val: string;
@@ -11,17 +12,23 @@ export interface SiteContent {
   hero_title_suffix: string;
   hero_subtitle: string;
   phone: string;
+  phone_display: string;
+  whatsapp_number: string;
+  contact_email: string;
   stats: SiteStat[];
   about_text: string;
 }
 
-const DEFAULTS: SiteContent = {
+export const DEFAULTS: SiteContent = {
   hero_title_main: "İstanbul Diafon Montaj",
   hero_title_accent: "ve Servis",
   hero_title_suffix: "Uzmanı",
   hero_subtitle:
     "Görüntülü diafon sistemleri, tesisat keşfi ve kablo yenileme projelerinde 10 yıllık deneyimimizle kalıcı ve garantili çözümler sunuyoruz.",
   phone: "05320615758",
+  phone_display: "0532 061 57 58",
+  whatsapp_number: "905320615758",
+  contact_email: "info@diafonistanbul.com",
   stats: [
     { val: "500+", label: "Başarılı Montaj" },
     { val: "10+", label: "Yıl Deneyim" },
@@ -32,7 +39,14 @@ const DEFAULTS: SiteContent = {
     "10 yılı aşkın deneyimimizle İstanbul'un 39 ilçesinde diafon montajı, kablo yenileme ve 7/24 arıza servisi sunuyoruz. \"Kaliteye Güven\" prensibimizle yüzlerce konut ve ticari projeye imza attık.",
 };
 
-export function useSiteContent() {
+type ContextValue = { content: SiteContent; loading: boolean };
+
+const SiteContentContext = createContext<ContextValue>({
+  content: DEFAULTS,
+  loading: true,
+});
+
+export function SiteContentProvider({ children }: { children: ReactNode }) {
   const [content, setContent] = useState<SiteContent>(DEFAULTS);
   const [loading, setLoading] = useState(true);
 
@@ -46,7 +60,15 @@ export function useSiteContent() {
       .finally(() => setLoading(false));
   }, []);
 
-  return { content, loading };
+  return createElement(
+    SiteContentContext.Provider,
+    { value: { content, loading } },
+    children
+  );
+}
+
+export function useSiteContent(): ContextValue {
+  return useContext(SiteContentContext);
 }
 
 export async function saveSiteContent(

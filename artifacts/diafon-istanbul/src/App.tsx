@@ -14,6 +14,7 @@ import GoruntulDiafonFiyatlari from "@/pages/GoruntulDiafonFiyatlari";
 import GoruntulDiafonModelleri from "@/pages/GoruntulDiafonModelleri";
 import { ThemeProvider } from "@/lib/theme-context";
 import { ScrollToTop } from "@/components/ScrollToTop";
+import { SiteContentProvider } from "@/hooks/useSiteContent";
 
 const queryClient = new QueryClient();
 
@@ -41,14 +42,16 @@ function Router() {
 function App() {
   return (
     <ThemeProvider>
-      <QueryClientProvider client={queryClient}>
-        <TooltipProvider>
-          <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-            <Router />
-          </WouterRouter>
-          <Toaster />
-        </TooltipProvider>
-      </QueryClientProvider>
+      <SiteContentProvider>
+        <QueryClientProvider client={queryClient}>
+          <TooltipProvider>
+            <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+              <Router />
+            </WouterRouter>
+            <Toaster />
+          </TooltipProvider>
+        </QueryClientProvider>
+      </SiteContentProvider>
     </ThemeProvider>
   );
 }

@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronRight, CheckCircle2, Phone } from "lucide-react";
 import { toast } from "sonner";
+import { useSiteContent } from "@/hooks/useSiteContent";
 
 interface QuoteModalProps {
   isOpen: boolean;
@@ -10,6 +11,7 @@ interface QuoteModalProps {
 }
 
 export default function QuoteModal({ isOpen, onClose, productName }: QuoteModalProps) {
+  const { content } = useSiteContent();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [note, setNote] = useState("");
@@ -164,8 +166,8 @@ export default function QuoteModal({ isOpen, onClose, productName }: QuoteModalP
                     </button>
                     <p className="text-xs text-muted-foreground text-center">
                       Veya hemen arayın:{" "}
-                      <a href="tel:+905320615758" className="text-primary font-semibold hover:underline inline-flex items-center gap-1">
-                        <Phone className="w-3 h-3" /> 0532 061 57 58
+                      <a href={`tel:+${content.whatsapp_number}`} className="text-primary font-semibold hover:underline inline-flex items-center gap-1">
+                        <Phone className="w-3 h-3" /> {content.phone_display}
                       </a>
                     </p>
                   </form>

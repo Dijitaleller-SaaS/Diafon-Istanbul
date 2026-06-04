@@ -14,6 +14,9 @@ const DEFAULT_CONTENT: Record<string, unknown> = {
   hero_subtitle:
     "Görüntülü diafon sistemleri, tesisat keşfi ve kablo yenileme projelerinde 10 yıllık deneyimimizle kalıcı ve garantili çözümler sunuyoruz.",
   phone: "05320615758",
+  phone_display: "0532 061 57 58",
+  whatsapp_number: "905320615758",
+  contact_email: "info@diafonistanbul.com",
   stats: [
     { val: "500+", label: "Başarılı Montaj" },
     { val: "10+", label: "Yıl Deneyim" },

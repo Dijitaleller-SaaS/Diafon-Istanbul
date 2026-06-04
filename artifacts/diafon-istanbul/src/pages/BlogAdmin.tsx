@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "wouter";
-import { PlusCircle, Pencil, Trash2, Eye, EyeOff, LogOut, ArrowLeft, Save, X, Layout, FileText } from "lucide-react";
+import { PlusCircle, Pencil, Trash2, Eye, EyeOff, LogOut, ArrowLeft, Save, X, Layout, FileText, Settings, MessageSquare, Phone, Mail, CheckCircle2, Clock, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -375,11 +375,231 @@ function HomepageEditor() {
   );
 }
 
+interface Lead {
+  id: number;
+  name: string;
+  phone: string;
+  product?: string | null;
+  message?: string | null;
+  status: "new" | "contacted" | "closed";
+  createdAt: string;
+}
+
+function AyarlarEditor() {
+  const { content, loading } = useSiteContent();
+  const [form, setForm] = useState({ phone_display: "", whatsapp_number: "", contact_email: "" });
+  const [saving, setSaving] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!loading) {
+      setForm({
+        phone_display: content.phone_display,
+        whatsapp_number: content.whatsapp_number,
+        contact_email: content.contact_email,
+      });
+    }
+  }, [loading, content]);
+
+  const save = async (key: "phone_display" | "whatsapp_number" | "contact_email") => {
+    setSaving(key);
+    const result = await saveSiteContent(key, form[key], ADMIN_PASSWORD);
+    setSaving(null);
+    if (result.ok) toast.success("Kaydedildi.");
+    else toast.error(result.error ?? "Kayıt hatası.");
+  };
+
+  if (loading) return <div className="py-16 text-center text-muted-foreground text-sm">Yükleniyor…</div>;
+
+  return (
+    <div className="space-y-6 max-w-2xl">
+      <div className="bg-card border border-border rounded-2xl p-6 space-y-5">
+        <h3 className="font-semibold text-foreground flex items-center gap-2">
+          <Phone className="w-4 h-4 text-primary" /> İletişim Bilgileri
+        </h3>
+
+        <div className="space-y-1">
+          <label className="block text-sm font-medium text-foreground">Gösterilen Telefon</label>
+          <p className="text-xs text-muted-foreground mb-1.5">Sitede görünen formatlı numara (ör. 0532 061 57 58)</p>
+          <div className="flex gap-2">
+            <Input
+              value={form.phone_display}
+              onChange={(e) => setForm((p) => ({ ...p, phone_display: e.target.value }))}
+              placeholder="0532 061 57 58"
+            />
+            <Button size="sm" disabled={saving === "phone_display"} onClick={() => save("phone_display")}>
+              <Save className="w-3.5 h-3.5 mr-1.5" />
+              {saving === "phone_display" ? "…" : "Kaydet"}
+            </Button>
+          </div>
+        </div>
+
+        <div className="space-y-1">
+          <label className="block text-sm font-medium text-foreground">WhatsApp / tel: Numarası</label>
+          <p className="text-xs text-muted-foreground mb-1.5">Ülke kodu dahil rakam (ör. 905320615758)</p>
+          <div className="flex gap-2">
+            <Input
+              value={form.whatsapp_number}
+              onChange={(e) => setForm((p) => ({ ...p, whatsapp_number: e.target.value }))}
+              placeholder="905320615758"
+            />
+            <Button size="sm" disabled={saving === "whatsapp_number"} onClick={() => save("whatsapp_number")}>
+              <Save className="w-3.5 h-3.5 mr-1.5" />
+              {saving === "whatsapp_number" ? "…" : "Kaydet"}
+            </Button>
+          </div>
+        </div>
+
+        <div className="space-y-1">
+          <label className="block text-sm font-medium text-foreground flex items-center gap-1.5">
+            <Mail className="w-3.5 h-3.5" /> E-posta
+          </label>
+          <div className="flex gap-2">
+            <Input
+              value={form.contact_email}
+              onChange={(e) => setForm((p) => ({ ...p, contact_email: e.target.value }))}
+              placeholder="info@diafonistanbul.com"
+            />
+            <Button size="sm" disabled={saving === "contact_email"} onClick={() => save("contact_email")}>
+              <Save className="w-3.5 h-3.5 mr-1.5" />
+              {saving === "contact_email" ? "…" : "Kaydet"}
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const STATUS_LABELS: Record<Lead["status"], string> = {
+  new: "Yeni",
+  contacted: "İletişime Geçildi",
+  closed: "Kapatıldı",
+};
+
+const STATUS_COLORS: Record<Lead["status"], string> = {
+  new: "bg-blue-500/10 text-blue-600 border-blue-200",
+  contacted: "bg-amber-500/10 text-amber-600 border-amber-200",
+  closed: "bg-emerald-500/10 text-emerald-600 border-emerald-200",
+};
+
+function TaleplerPanel() {
+  const [leads, setLeads] = useState<Lead[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [updatingId, setUpdatingId] = useState<number | null>(null);
+
+  const fetchLeads = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/leads?password=${ADMIN_PASSWORD}`);
+      if (!res.ok) throw new Error();
+      const data = await res.json();
+      setLeads(data);
+    } catch {
+      toast.error("Talepler yüklenemedi.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => { fetchLeads(); }, []);
+
+  const updateStatus = async (id: number, status: Lead["status"]) => {
+    setUpdatingId(id);
+    try {
+      const res = await fetch(`/api/leads/${id}/status`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status, password: ADMIN_PASSWORD }),
+      });
+      if (!res.ok) throw new Error();
+      setLeads((prev) => prev.map((l) => l.id === id ? { ...l, status } : l));
+      toast.success("Durum güncellendi.");
+    } catch {
+      toast.error("Güncelleme başarısız.");
+    } finally {
+      setUpdatingId(null);
+    }
+  };
+
+  if (loading) return (
+    <div className="py-16 text-center text-muted-foreground text-sm flex flex-col items-center gap-2">
+      <RefreshCw className="w-5 h-5 animate-spin" /> Yükleniyor…
+    </div>
+  );
+
+  if (leads.length === 0) return (
+    <div className="py-16 text-center text-muted-foreground">
+      <MessageSquare className="w-10 h-10 mx-auto mb-3 opacity-30" />
+      <p>Henüz talep yok.</p>
+    </div>
+  );
+
+  const byStatus = (s: Lead["status"]) => leads.filter((l) => l.status === s).length;
+
+  return (
+    <div className="space-y-4 max-w-4xl">
+      <div className="flex items-center justify-between">
+        <div className="flex gap-3 text-sm">
+          <span className="flex items-center gap-1.5 text-blue-600"><Clock className="w-3.5 h-3.5" /> {byStatus("new")} yeni</span>
+          <span className="flex items-center gap-1.5 text-amber-600"><Phone className="w-3.5 h-3.5" /> {byStatus("contacted")} görüşüldü</span>
+          <span className="flex items-center gap-1.5 text-emerald-600"><CheckCircle2 className="w-3.5 h-3.5" /> {byStatus("closed")} kapatıldı</span>
+        </div>
+        <Button size="sm" variant="outline" onClick={fetchLeads} className="flex items-center gap-1.5">
+          <RefreshCw className="w-3.5 h-3.5" /> Yenile
+        </Button>
+      </div>
+
+      <div className="space-y-3">
+        {leads.map((lead) => (
+          <div key={lead.id} className="bg-card border border-border rounded-xl p-4">
+            <div className="flex items-start justify-between gap-4 flex-wrap">
+              <div className="space-y-1 flex-1 min-w-0">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="font-semibold text-foreground">{lead.name}</span>
+                  <Badge className={`text-xs ${STATUS_COLORS[lead.status]}`}>{STATUS_LABELS[lead.status]}</Badge>
+                  {lead.product && (
+                    <span className="text-xs bg-muted px-2 py-0.5 rounded-full text-muted-foreground">{lead.product}</span>
+                  )}
+                </div>
+                <a href={`tel:${lead.phone}`} className="text-sm text-primary font-medium flex items-center gap-1 hover:underline">
+                  <Phone className="w-3.5 h-3.5" /> {lead.phone}
+                </a>
+                {lead.message && (
+                  <p className="text-sm text-muted-foreground line-clamp-2">{lead.message}</p>
+                )}
+                <p className="text-xs text-muted-foreground">
+                  {new Date(lead.createdAt).toLocaleString("tr-TR")}
+                </p>
+              </div>
+              <div className="flex items-center gap-1.5 shrink-0 flex-wrap">
+                {(["new", "contacted", "closed"] as Lead["status"][]).map((s) => (
+                  <button
+                    key={s}
+                    disabled={lead.status === s || updatingId === lead.id}
+                    onClick={() => updateStatus(lead.id, s)}
+                    className={`text-xs px-2.5 py-1 rounded-lg border font-medium transition-colors disabled:opacity-50 ${
+                      lead.status === s
+                        ? STATUS_COLORS[s]
+                        : "border-border text-muted-foreground hover:border-primary/40 hover:text-foreground"
+                    }`}
+                  >
+                    {STATUS_LABELS[s]}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function BlogAdmin() {
   const [authed, setAuthed] = useState(false);
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [editing, setEditing] = useState<BlogPost | null | "new">(null);
-  const [activeTab, setActiveTab] = useState<"blog" | "homepage">("blog");
+  const [activeTab, setActiveTab] = useState<"blog" | "homepage" | "ayarlar" | "talepler">("blog");
 
   useEffect(() => {
     if (localStorage.getItem(AUTH_KEY) === "1") setAuthed(true);
@@ -447,13 +667,25 @@ export default function BlogAdmin() {
                 onClick={() => setActiveTab("blog")}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${activeTab === "blog" ? "bg-background shadow-sm text-foreground" : "text-muted-foreground hover:text-foreground"}`}
               >
-                <FileText className="w-3.5 h-3.5" /> Blog Yazıları
+                <FileText className="w-3.5 h-3.5" /> Blog
               </button>
               <button
                 onClick={() => setActiveTab("homepage")}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${activeTab === "homepage" ? "bg-background shadow-sm text-foreground" : "text-muted-foreground hover:text-foreground"}`}
               >
                 <Layout className="w-3.5 h-3.5" /> Ana Sayfa
+              </button>
+              <button
+                onClick={() => setActiveTab("ayarlar")}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${activeTab === "ayarlar" ? "bg-background shadow-sm text-foreground" : "text-muted-foreground hover:text-foreground"}`}
+              >
+                <Settings className="w-3.5 h-3.5" /> Ayarlar
+              </button>
+              <button
+                onClick={() => setActiveTab("talepler")}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${activeTab === "talepler" ? "bg-background shadow-sm text-foreground" : "text-muted-foreground hover:text-foreground"}`}
+              >
+                <MessageSquare className="w-3.5 h-3.5" /> Talepler
               </button>
             </div>
           </div>
@@ -477,6 +709,10 @@ export default function BlogAdmin() {
       <main className="container mx-auto px-4 md:px-6 py-8">
         {activeTab === "homepage" ? (
           <HomepageEditor />
+        ) : activeTab === "ayarlar" ? (
+          <AyarlarEditor />
+        ) : activeTab === "talepler" ? (
+          <TaleplerPanel />
         ) : (
           <>
             <div className="mb-4">

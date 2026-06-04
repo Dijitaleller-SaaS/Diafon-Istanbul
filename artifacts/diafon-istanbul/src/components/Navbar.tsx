@@ -4,6 +4,7 @@ import { Phone, Menu, X, Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/lib/theme-context";
+import { useSiteContent } from "@/hooks/useSiteContent";
 
 const NAV_ITEMS = [
   { label: "Ana Sayfa", href: "/" },
@@ -14,6 +15,7 @@ const NAV_ITEMS = [
 ];
 
 export default function Navbar() {
+  const { content } = useSiteContent();
   const { isDark, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -101,10 +103,10 @@ export default function Navbar() {
               {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
             </button>
             <a
-              href="tel:+905320615758"
+              href={`tel:+${content.whatsapp_number}`}
               className="text-sm font-medium text-foreground hidden lg:block"
             >
-              0532 061 57 58
+              {content.phone_display}
             </a>
             <Button
               onClick={() => handleAnchorClick("iletisim")}
@@ -162,11 +164,11 @@ export default function Navbar() {
           )}
           <div className="flex flex-col items-center gap-4 mt-4">
             <a
-              href="tel:+905320615758"
+              href={`tel:+${content.whatsapp_number}`}
               className="text-lg font-semibold flex items-center gap-2 text-primary"
             >
               <Phone className="h-5 w-5" />
-              0532 061 57 58
+              {content.phone_display}
             </a>
           </div>
         </div>

@@ -8,6 +8,7 @@ import {
 import Navbar from "@/components/Navbar";
 import QuoteModal from "@/components/QuoteModal";
 import { Button } from "@/components/ui/button";
+import { useSiteContent } from "@/hooks/useSiteContent";
 
 const fade = (delay = 0) => ({
   initial: { opacity: 0, y: 24 },
@@ -101,6 +102,7 @@ const FAQS = [
 ];
 
 export default function GoruntulDiafonModelleri() {
+  const { content } = useSiteContent();
   const [quoteOpen, setQuoteOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [selectedModel, setSelectedModel] = useState<string | null>(null);
@@ -304,7 +306,7 @@ export default function GoruntulDiafonModelleri() {
                 <ChevronRight className="w-4 h-4" /> Ücretsiz Fiyat Al
               </Button>
               <Button size="lg" variant="outline" asChild className="border-white/30 text-white hover:bg-white/10 rounded-lg h-12 px-6 gap-2">
-                <a href="tel:+905320615758"><Phone className="w-4 h-4" /> Hemen Ara</a>
+                <a href={`tel:+${content.whatsapp_number}`}><Phone className="w-4 h-4" /> Hemen Ara</a>
               </Button>
             </div>
           </div>
@@ -318,8 +320,8 @@ export default function GoruntulDiafonModelleri() {
             <span className="font-bold text-white">Diafon İstanbul</span>
           </Link>
           <p className="text-secondary-foreground/60 text-sm">&copy; {new Date().getFullYear()} Diafon İstanbul</p>
-          <a href="tel:+905320615758" className="text-secondary-foreground/80 hover:text-white font-semibold transition-colors flex items-center gap-2 text-sm">
-            <Phone className="w-4 h-4" /> 0532 061 57 58
+          <a href={`tel:+${content.whatsapp_number}`} className="text-secondary-foreground/80 hover:text-white font-semibold transition-colors flex items-center gap-2 text-sm">
+            <Phone className="w-4 h-4" /> {content.phone_display}
           </a>
         </div>
       </footer>

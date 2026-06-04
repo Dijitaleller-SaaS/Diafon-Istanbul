@@ -448,7 +448,7 @@ export default function Home() {
                     className="rounded-md h-12 px-6 flex items-center gap-2 shadow-md shadow-primary/20 hover:shadow-primary/40 transition-all"
                     data-testid="hero-cta-call"
                   >
-                    <a href="tel:+905320615758">
+                    <a href={`tel:+${content.whatsapp_number}`}>
                       <Phone className="w-4 h-4" />
                       Hemen Ara
                     </a>
@@ -462,7 +462,7 @@ export default function Home() {
                     data-testid="hero-cta-whatsapp"
                   >
                     <a
-                      href="https://wa.me/905320615758?text=Merhaba%2C%20%C3%BCcretsiz%20ke%C5%9Fif%20talep%20etmek%20istiyorum"
+                      href={`https://wa.me/${content.whatsapp_number}?text=Merhaba%2C%20%C3%BCcretsiz%20ke%C5%9Fif%20talep%20etmek%20istiyorum`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -1175,7 +1175,7 @@ export default function Home() {
               {/* Sol: İletişim Bilgileri + Harita */}
               <FadeIn delay={0.1} className="lg:col-span-2 space-y-4">
                 <a
-                  href="tel:+905320615758"
+                  href={`tel:+${content.whatsapp_number}`}
                   className="flex items-start gap-4 p-4 rounded-xl bg-background border border-border hover:border-primary/40 transition-colors group"
                 >
                   <div className="w-11 h-11 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-white transition-colors">
@@ -1183,7 +1183,7 @@ export default function Home() {
                   </div>
                   <div>
                     <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider mb-0.5">Telefon</p>
-                    <p className="text-lg font-bold text-primary">0532 061 57 58</p>
+                    <p className="text-lg font-bold text-primary">{content.phone_display}</p>
                     <p className="text-xs text-muted-foreground mt-0.5">7/24 Teknik Destek</p>
                   </div>
                 </a>
@@ -1389,14 +1389,14 @@ export default function Home() {
               <ul className="space-y-4">
                 <li>
                   <a
-                    href="tel:+905320615758"
+                    href={`tel:+${content.whatsapp_number}`}
                     className="flex items-center gap-3 text-secondary-foreground/80 hover:text-white transition-colors group"
                     data-testid="footer-phone"
                   >
                     <div className="w-8 h-8 rounded-full bg-secondary-foreground/10 flex items-center justify-center group-hover:bg-primary/20 group-hover:text-primary transition-colors">
                       <Phone className="w-4 h-4" />
                     </div>
-                    <span className="font-medium text-lg">0532 061 57 58</span>
+                    <span className="font-medium text-lg">{content.phone_display}</span>
                   </a>
                 </li>
                 <li className="flex items-center gap-3 text-secondary-foreground/80">

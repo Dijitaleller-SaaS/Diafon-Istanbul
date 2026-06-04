@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import { useSiteContent } from "@/hooks/useSiteContent";
 import {
   MapPin,
   Settings,
@@ -39,6 +40,7 @@ const FadeIn = ({
 };
 
 export default function Hakkimizda() {
+  const { content } = useSiteContent();
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col">
       <Navbar />
@@ -209,10 +211,10 @@ export default function Hakkimizda() {
                   Ücretsiz Keşif Talep Et <ChevronRight className="w-4 h-4" />
                 </Button>
               </Link>
-              <a href="tel:+905320615758">
+              <a href={`tel:+${content.whatsapp_number}`}>
                 <Button size="lg" variant="outline" className="gap-2">
                   <Phone className="w-4 h-4" />
-                  0532 061 57 58
+                  {content.phone_display}
                 </Button>
               </a>
             </div>
@@ -230,8 +232,8 @@ export default function Hakkimizda() {
             <span className="font-bold text-white">Diafon İstanbul</span>
           </div>
           <div className="flex items-center gap-4 text-secondary-foreground/70 text-sm">
-            <a href="tel:+905320615758" className="hover:text-white transition-colors flex items-center gap-1.5">
-              <Phone className="w-3.5 h-3.5" /> 0532 061 57 58
+            <a href={`tel:+${content.whatsapp_number}`} className="hover:text-white transition-colors flex items-center gap-1.5">
+              <Phone className="w-3.5 h-3.5" /> {content.phone_display}
             </a>
             <span>·</span>
             <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" /> 7/24</span>

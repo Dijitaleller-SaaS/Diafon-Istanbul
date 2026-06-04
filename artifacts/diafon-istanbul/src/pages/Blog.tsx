@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import Navbar from "@/components/Navbar";
 import { cn } from "@/lib/utils";
+import { useSiteContent } from "@/hooks/useSiteContent";
 
 export interface BlogPost {
   id: string;
@@ -179,6 +180,7 @@ function PostCard({ post }: { post: BlogPost }) {
 }
 
 function PostDetail({ slug }: { slug: string }) {
+  const { content } = useSiteContent();
   const [post, setPost] = useState<BlogPost | null>(null);
 
   useEffect(() => {
@@ -255,7 +257,7 @@ function PostDetail({ slug }: { slug: string }) {
           <div className="mt-12 pt-8 border-t border-border">
             <p className="text-muted-foreground mb-4">Bu yazı faydalı oldu mu? Daha fazla bilgi için bizi arayın:</p>
             <Button asChild>
-              <a href="tel:+905320615758">0532 061 57 58</a>
+              <a href={`tel:+${content.whatsapp_number}`}>{content.phone_display}</a>
             </Button>
           </div>
         </div>
